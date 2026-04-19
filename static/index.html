@@ -442,14 +442,14 @@
   white-space:nowrap;
 }
 .ko-round-option{
-  min-height:28px;
-  padding:4px 6px;
+  min-height:24px;
+  padding:3px 5px;
   border:none;
   background:transparent;
   color:#f2f6ff;
   border-radius:8px;
   cursor:pointer;
-  font-size:12px;
+  font-size:11px;
   font-weight:800;
   letter-spacing:.2px;
   text-transform:none;
@@ -495,22 +495,26 @@
 }
 .ko-round-grid{
   display:grid;
-  grid-template-columns:repeat(2, minmax(110px, 1fr));
-  gap:2px 10px;
+  grid-template-columns:repeat(2, minmax(92px, 1fr));
+  gap:1px 8px;
   flex:1 1 auto;
-  min-width:240px;
+  min-width:205px;
 }
 .ko-round-controls{
   display:flex;
   align-items:center;
-  gap:10px;
-  width:100%;
+  justify-content:center;
+  gap:8px;
+  width:auto;
+  margin:0 auto;
+  max-width:100%;
 }
 .ko-bracket-sim-btn.side{
   flex:0 0 auto;
-  min-width:102px;
-  min-height:40px;
-  border-radius:12px;
+  min-width:86px;
+  min-height:34px;
+  border-radius:10px;
+  font-size:11px;
 }
 .bracket{
       position:relative;
@@ -900,7 +904,7 @@
       }
       .groupbar{gap:7px;padding-bottom:12px;margin-bottom:12px;}
       .gbtn{width:40px;height:36px;border-radius:11px;}
-      .group-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:8px;}
+      .group-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:8px;}
       .group-actions .button{width:100%;justify-content:center;}
       .mode-row{justify-content:space-between;align-items:center;}
       .mode-row-title{font-size:13px;}
@@ -1000,6 +1004,7 @@
         <div class="groupbar" id="groupBar"></div>
         <div class="group-actions">
           <button class="button" id="simulate-group-btn" type="button">🎲 Simular grupo</button>
+          <button class="button" id="simulate-all-groups-btn" type="button">🎯 Simular grupos A-L</button>
           <button class="button secondary" id="reset-group-btn" type="button">⟳ Reiniciar grupo</button>
         </div>
         <h2 style="margin:0 0 10px 0; font-size:16px;">Tabla de Posiciones - Grupo <span id="lblGroup">A</span></h2>
@@ -1626,6 +1631,9 @@ function getSimSteps(kind) {
   return kind === "group" ? 22 : 16;
 }
 
+const GROUP_SIM_STEP_DELAY = 20;
+const GROUP_SIM_FINAL_DELAY = 34;
+
 function setSimHud(title, progress = 0) {
   const hud = document.getElementById("simHud");
   const titleEl = document.getElementById("simHudTitle");
@@ -2200,7 +2208,9 @@ async function simulateCurrentGroup() {
   IS_SIMULATING = true;
 
   const btn = document.getElementById("simulate-group-btn");
+  const btnAll = document.getElementById("simulate-all-groups-btn");
   const oldLabel = btn ? btn.innerHTML : "";
+  const oldAllLabel = btnAll ? btnAll.innerHTML : "";
 
   try {
     if (!FIXTURES[currentGroup]) FIXTURES[currentGroup] = {};
@@ -2209,6 +2219,7 @@ async function simulateCurrentGroup() {
       btn.disabled = true;
       btn.innerHTML = "⏳ Simulando...";
     }
+    if (btnAll) btnAll.disabled = true;
 
     const steps = getSimSteps("group");
 
@@ -2221,7 +2232,7 @@ async function simulateCurrentGroup() {
       renderGroupView();
       setSimHud(`Simulando Grupo ${currentGroup}...`, step / steps);
       playSimTick(1 + (step / steps) * 0.35);
-      await sleep(step < steps ? 29 : 49);
+      await sleep(step < steps ? GROUP_SIM_STEP_DELAY : GROUP_SIM_FINAL_DELAY);
     }
 
     renderGroupView();
@@ -2231,6 +2242,65 @@ async function simulateCurrentGroup() {
     if (btn) {
       btn.disabled = false;
       btn.innerHTML = oldLabel || "🎲 Simular grupo";
+    }
+    if (btnAll) {
+      btnAll.disabled = false;
+      btnAll.innerHTML = oldAllLabel || "🎯 Simular grupos A-L";
+    }
+    IS_SIMULATING = false;
+  }
+}
+
+async function simulateAllGroups() {
+  if (IS_SIMULATING) return;
+
+  clearPendingGroupRender();
+  const groups = Object.keys(GROUPS).sort();
+  if (!groups.length) return;
+
+  IS_SIMULATING = true;
+
+  const btnSingle = document.getElementById("simulate-group-btn");
+  const btnAll = document.getElementById("simulate-all-groups-btn");
+  const oldSingleLabel = btnSingle ? btnSingle.innerHTML : "";
+  const oldAllLabel = btnAll ? btnAll.innerHTML : "";
+
+  try {
+    if (btnSingle) btnSingle.disabled = true;
+    if (btnAll) {
+      btnAll.disabled = true;
+      btnAll.innerHTML = "⏳ Simulando A-L...";
+    }
+
+    const steps = getSimSteps("group");
+
+    for (let step = 1; step <= steps; step++) {
+      groups.forEach(groupName => {
+        const matches = getGroupMatchPlan(groupName);
+        if (!FIXTURES[groupName]) FIXTURES[groupName] = {};
+        matches.forEach(match => {
+          const result = pickWeightedResult(match.homeTeam, match.awayTeam, groupName);
+          FIXTURES[groupName][match.id] = { l: String(result.l), r: String(result.r) };
+        });
+      });
+
+      renderGroupView();
+      setSimHud("Simulando grupos A-L...", step / steps);
+      playSimTick(1 + (step / steps) * 0.35);
+      await sleep(step < steps ? GROUP_SIM_STEP_DELAY : GROUP_SIM_FINAL_DELAY);
+    }
+
+    renderGroupView();
+    document.getElementById("statusPill").textContent = "Grupos A-L simulados";
+  } finally {
+    hideSimHud();
+    if (btnSingle) {
+      btnSingle.disabled = false;
+      btnSingle.innerHTML = oldSingleLabel || "🎲 Simular grupo";
+    }
+    if (btnAll) {
+      btnAll.disabled = false;
+      btnAll.innerHTML = oldAllLabel || "🎯 Simular grupos A-L";
     }
     IS_SIMULATING = false;
   }
@@ -3445,6 +3515,7 @@ if (bracketNode) void prepareBracketImagesForExport(bracketNode);
 document.getElementById("tab-groups").onclick = () => { void switchTab("groups"); };
 document.getElementById("tab-ko").onclick = () => { void switchTab("ko"); };
 document.getElementById("simulate-group-btn").onclick = simulateCurrentGroup;
+document.getElementById("simulate-all-groups-btn").onclick = simulateAllGroups;
 document.getElementById("reset-group-btn").onclick = resetCurrentGroup;
 document.getElementById("simple-mode-toggle").onclick = toggleSimpleMode;
 document.getElementById("reset-ko-btn").onclick = resetKOSelections;
