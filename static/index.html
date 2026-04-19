@@ -442,31 +442,75 @@
   white-space:nowrap;
 }
 .ko-round-option{
-  min-height:30px;
-  padding:5px 12px;
-  border:1px solid rgba(255,214,64,.4);
-  background:rgba(255,255,255,.05);
+  min-height:28px;
+  padding:4px 6px;
+  border:none;
+  background:transparent;
   color:#f2f6ff;
-  border-radius:999px;
+  border-radius:8px;
   cursor:pointer;
-  font-size:11px;
-  font-weight:900;
-  letter-spacing:.4px;
-  text-transform:uppercase;
-  transition:transform .14s ease, filter .15s ease, border-color .15s ease, background .15s ease;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.2px;
+  text-transform:none;
+  transition:transform .12s ease, opacity .15s ease, color .15s ease;
   white-space:nowrap;
+  display:inline-flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:8px;
 }
 .ko-round-option:hover:not([data-locked="1"]){
   transform:translateY(-1px);
 }
+.ko-round-option[data-locked="1"]{
+  opacity:.5;
+  cursor:not-allowed;
+}
+.ko-round-dot{
+  width:14px;
+  height:14px;
+  border-radius:999px;
+  border:1.5px solid rgba(255,255,255,.92);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 14px;
+}
+.ko-round-dot::after{
+  content:"";
+  width:7px;
+  height:7px;
+  border-radius:999px;
+  background:transparent;
+}
 .ko-round-option[data-selected="1"]{
-  border-color:rgba(255,214,64,.78);
-  background:linear-gradient(180deg, rgba(247,214,111,.24), rgba(232,182,33,.2));
   color:#fff2b5;
 }
-.ko-round-option[data-locked="1"]{
-  opacity:.55;
-  cursor:not-allowed;
+.ko-round-option[data-selected="1"] .ko-round-dot{
+  border-color:#ffd966;
+}
+.ko-round-option[data-selected="1"] .ko-round-dot::after{
+  background:#ffd966;
+}
+.ko-round-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(110px, 1fr));
+  gap:2px 10px;
+  flex:1 1 auto;
+  min-width:240px;
+}
+.ko-round-controls{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+}
+.ko-bracket-sim-btn.side{
+  flex:0 0 auto;
+  min-width:102px;
+  min-height:40px;
+  border-radius:12px;
 }
 .bracket{
       position:relative;
@@ -2747,14 +2791,17 @@ function getFirstReadyRound(progress) {
 }
 
 function normalizeSelectedRound(progress) {
+  if (KO_SELECTED_ROUND === "all") return;
   if (isRoundReadyForSimulation(KO_SELECTED_ROUND, progress)) return;
   KO_SELECTED_ROUND = getFirstReadyRound(progress);
 }
 
 function renderRoundOptionHTML(roundKey, progress) {
-  const locked = IS_SIMULATING || !isRoundReadyForSimulation(roundKey, progress);
+  const isAll = roundKey === "all";
+  const locked = IS_SIMULATING || (!isAll && !isRoundReadyForSimulation(roundKey, progress));
   const selected = KO_SELECTED_ROUND === roundKey;
-  return `<button type="button" class="ko-round-option" data-ko-round="${roundKey}" data-selected="${selected ? "1" : "0"}" data-locked="${locked ? "1" : "0"}" aria-disabled="${locked ? "true" : "false"}" onclick="selectKORound('${roundKey}')" aria-label="Elegir ${getSegmentVisualLabel(roundKey)}">${getSegmentVisualLabel(roundKey)}</button>`;
+  const label = isAll ? "Simular todo" : getSegmentVisualLabel(roundKey);
+  return `<button type="button" class="ko-round-option" data-ko-round="${roundKey}" data-selected="${selected ? "1" : "0"}" data-locked="${locked ? "1" : "0"}" aria-disabled="${locked ? "true" : "false"}" onclick="selectKORound('${roundKey}')" aria-label="Elegir ${label}"><span class="ko-round-dot"></span><span>${label}</span></button>`;
 }
 
 function renderBracketSimStrip(progress = getKOProgress()) {
@@ -2762,14 +2809,16 @@ function renderBracketSimStrip(progress = getKOProgress()) {
   if (!strip) return;
   normalizeSelectedRound(progress);
 
-  const order = ["r16", "r8", "r4", "sf", "final"];
-  const selectedLocked = IS_SIMULATING || !isRoundReadyForSimulation(KO_SELECTED_ROUND, progress);
+  const rowPairs = [["all", "r4"], ["r16", "sf"], ["r8", "final"]];
+  const selectedLocked = IS_SIMULATING || (KO_SELECTED_ROUND !== "all" && !isRoundReadyForSimulation(KO_SELECTED_ROUND, progress));
 
   strip.innerHTML = `
-    <span class="ko-bracket-sim-mini-label">Ronda</span>
-    ${order.map(roundKey => renderRoundOptionHTML(roundKey, progress)).join("")}
-    <button type="button" class="ko-bracket-sim-btn" data-locked="${selectedLocked ? "1" : "0"}" aria-disabled="${selectedLocked ? "true" : "false"}" onclick="simSelectedKORound()" aria-label="Simular ronda seleccionada">Simular</button>
-    <button type="button" class="ko-sim-all-btn" onclick="simKOAll()" ${IS_SIMULATING ? "disabled" : ""} aria-label="Simular toda la eliminatoria">Simular todo</button>
+    <div class="ko-round-controls">
+      <div class="ko-round-grid" role="radiogroup" aria-label="Opciones de simulación">
+        ${rowPairs.map(([leftKey, rightKey]) => `${renderRoundOptionHTML(leftKey, progress)}${renderRoundOptionHTML(rightKey, progress)}`).join("")}
+      </div>
+      <button type="button" class="ko-bracket-sim-btn side" data-locked="${selectedLocked ? "1" : "0"}" aria-disabled="${selectedLocked ? "true" : "false"}" onclick="simSelectedKORound()" aria-label="Simular opción seleccionada">Simular</button>
+    </div>
   `;
 }
 
@@ -2977,12 +3026,16 @@ window.simKOAll = async () => {
 
 window.selectKORound = (roundKey) => {
   const progress = getKOProgress();
-  if (!isRoundReadyForSimulation(roundKey, progress)) return;
+  if (roundKey !== "all" && !isRoundReadyForSimulation(roundKey, progress)) return;
   KO_SELECTED_ROUND = roundKey;
   renderBracketSimStrip(progress);
 };
 
 window.simSelectedKORound = async () => {
+  if (KO_SELECTED_ROUND === "all") {
+    await simKOAll();
+    return;
+  }
   await simKORound(KO_SELECTED_ROUND);
 };
 
