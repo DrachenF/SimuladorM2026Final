@@ -441,6 +441,81 @@
   line-height:1.1;
   white-space:nowrap;
 }
+.ko-round-option{
+  min-height:24px;
+  padding:3px 5px;
+  border:none;
+  background:transparent;
+  color:#f2f6ff;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.2px;
+  text-transform:none;
+  transition:transform .12s ease, opacity .15s ease, color .15s ease;
+  white-space:nowrap;
+  display:inline-flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:8px;
+}
+.ko-round-option:hover:not([data-locked="1"]){
+  transform:translateY(-1px);
+}
+.ko-round-option[data-locked="1"]{
+  opacity:.5;
+  cursor:not-allowed;
+}
+.ko-round-dot{
+  width:14px;
+  height:14px;
+  border-radius:999px;
+  border:1.5px solid rgba(255,255,255,.92);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 14px;
+}
+.ko-round-dot::after{
+  content:"";
+  width:7px;
+  height:7px;
+  border-radius:999px;
+  background:transparent;
+}
+.ko-round-option[data-selected="1"]{
+  color:#fff2b5;
+}
+.ko-round-option[data-selected="1"] .ko-round-dot{
+  border-color:#ffd966;
+}
+.ko-round-option[data-selected="1"] .ko-round-dot::after{
+  background:#ffd966;
+}
+.ko-round-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(92px, 1fr));
+  gap:1px 8px;
+  flex:1 1 auto;
+  min-width:205px;
+}
+.ko-round-controls{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  width:auto;
+  margin:0 auto;
+  max-width:100%;
+}
+.ko-bracket-sim-btn.side{
+  flex:0 0 auto;
+  min-width:86px;
+  min-height:34px;
+  border-radius:10px;
+  font-size:11px;
+}
 .bracket{
       position:relative;
       display:flex;
@@ -829,7 +904,7 @@
       }
       .groupbar{gap:7px;padding-bottom:12px;margin-bottom:12px;}
       .gbtn{width:40px;height:36px;border-radius:11px;}
-      .group-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:8px;}
+      .group-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:8px;}
       .group-actions .button{width:100%;justify-content:center;}
       .mode-row{justify-content:space-between;align-items:center;}
       .mode-row-title{font-size:13px;}
@@ -929,6 +1004,7 @@
         <div class="groupbar" id="groupBar"></div>
         <div class="group-actions">
           <button class="button" id="simulate-group-btn" type="button">🎲 Simular grupo</button>
+          <button class="button" id="simulate-all-groups-btn" type="button">🎯 Simular grupos A-L</button>
           <button class="button secondary" id="reset-group-btn" type="button">⟳ Reiniciar grupo</button>
         </div>
         <h2 style="margin:0 0 10px 0; font-size:16px;">Tabla de Posiciones - Grupo <span id="lblGroup">A</span></h2>
@@ -1039,6 +1115,7 @@ let KO_SCROLL_STATE = { left16:false, right16:false, left8:false, right8:false, 
 let KO_SUPPRESS_AUTO_SCROLL_UNTIL_MANUAL = false;
 let KO_FINAL_LOCKED = false;
 let KO_FINAL_LOCK_MESSAGE = '';
+let KO_SELECTED_ROUND = 'r16';
 let GROUP_RENDER_TIMER = null;
 let PENDING_GROUP_FOCUS = null;
 const EXPORT_SAFE_IMAGE_CACHE = new Map();
@@ -1553,6 +1630,9 @@ function getSimSteps(kind) {
   }
   return kind === "group" ? 22 : 16;
 }
+
+const GROUP_SIM_STEP_DELAY = 20;
+const GROUP_SIM_FINAL_DELAY = 34;
 
 function setSimHud(title, progress = 0) {
   const hud = document.getElementById("simHud");
@@ -2128,7 +2208,9 @@ async function simulateCurrentGroup() {
   IS_SIMULATING = true;
 
   const btn = document.getElementById("simulate-group-btn");
+  const btnAll = document.getElementById("simulate-all-groups-btn");
   const oldLabel = btn ? btn.innerHTML : "";
+  const oldAllLabel = btnAll ? btnAll.innerHTML : "";
 
   try {
     if (!FIXTURES[currentGroup]) FIXTURES[currentGroup] = {};
@@ -2137,6 +2219,7 @@ async function simulateCurrentGroup() {
       btn.disabled = true;
       btn.innerHTML = "⏳ Simulando...";
     }
+    if (btnAll) btnAll.disabled = true;
 
     const steps = getSimSteps("group");
 
@@ -2149,7 +2232,7 @@ async function simulateCurrentGroup() {
       renderGroupView();
       setSimHud(`Simulando Grupo ${currentGroup}...`, step / steps);
       playSimTick(1 + (step / steps) * 0.35);
-      await sleep(step < steps ? 29 : 49);
+      await sleep(step < steps ? GROUP_SIM_STEP_DELAY : GROUP_SIM_FINAL_DELAY);
     }
 
     renderGroupView();
@@ -2159,6 +2242,65 @@ async function simulateCurrentGroup() {
     if (btn) {
       btn.disabled = false;
       btn.innerHTML = oldLabel || "🎲 Simular grupo";
+    }
+    if (btnAll) {
+      btnAll.disabled = false;
+      btnAll.innerHTML = oldAllLabel || "🎯 Simular grupos A-L";
+    }
+    IS_SIMULATING = false;
+  }
+}
+
+async function simulateAllGroups() {
+  if (IS_SIMULATING) return;
+
+  clearPendingGroupRender();
+  const groups = Object.keys(GROUPS).sort();
+  if (!groups.length) return;
+
+  IS_SIMULATING = true;
+
+  const btnSingle = document.getElementById("simulate-group-btn");
+  const btnAll = document.getElementById("simulate-all-groups-btn");
+  const oldSingleLabel = btnSingle ? btnSingle.innerHTML : "";
+  const oldAllLabel = btnAll ? btnAll.innerHTML : "";
+
+  try {
+    if (btnSingle) btnSingle.disabled = true;
+    if (btnAll) {
+      btnAll.disabled = true;
+      btnAll.innerHTML = "⏳ Simulando A-L...";
+    }
+
+    const steps = getSimSteps("group");
+
+    for (let step = 1; step <= steps; step++) {
+      groups.forEach(groupName => {
+        const matches = getGroupMatchPlan(groupName);
+        if (!FIXTURES[groupName]) FIXTURES[groupName] = {};
+        matches.forEach(match => {
+          const result = pickWeightedResult(match.homeTeam, match.awayTeam, groupName);
+          FIXTURES[groupName][match.id] = { l: String(result.l), r: String(result.r) };
+        });
+      });
+
+      renderGroupView();
+      setSimHud("Simulando grupos A-L...", step / steps);
+      playSimTick(1 + (step / steps) * 0.35);
+      await sleep(step < steps ? GROUP_SIM_STEP_DELAY : GROUP_SIM_FINAL_DELAY);
+    }
+
+    renderGroupView();
+    document.getElementById("statusPill").textContent = "Grupos A-L simulados";
+  } finally {
+    hideSimHud();
+    if (btnSingle) {
+      btnSingle.disabled = false;
+      btnSingle.innerHTML = oldSingleLabel || "🎲 Simular grupo";
+    }
+    if (btnAll) {
+      btnAll.disabled = false;
+      btnAll.innerHTML = oldAllLabel || "🎯 Simular grupos A-L";
     }
     IS_SIMULATING = false;
   }
@@ -2703,36 +2845,55 @@ function getSegmentVisualLabel(roundKey) {
   return map[roundKey] || roundKey;
 }
 
-function renderBracketSimBtnHTML(roundKey) {
-  const locked = IS_SIMULATING || !isRoundReadyForSimulation(roundKey, getKOProgress());
-  return `<button type="button" class="ko-bracket-sim-btn" data-ko-round="${roundKey}" data-locked="${locked ? "1" : "0"}" aria-disabled="${locked ? "true" : "false"}" onclick="simKORound('${roundKey}')" aria-label="Simular ${getSegmentVisualLabel(roundKey)}">Simular</button>`;
+function getNextKORound(roundKey) {
+  const order = ["r16", "r8", "r4", "sf", "final"];
+  const idx = order.indexOf(roundKey);
+  if (idx < 0 || idx + 1 >= order.length) return null;
+  return order[idx + 1];
 }
 
-function renderBracketSimStrip() {
+function getFirstReadyRound(progress) {
+  const order = ["r16", "r8", "r4", "sf", "final"];
+  for (const roundKey of order) {
+    if (isRoundReadyForSimulation(roundKey, progress)) return roundKey;
+  }
+  return "r16";
+}
+
+function normalizeSelectedRound(progress) {
+  if (KO_SELECTED_ROUND === "all") return;
+  if (isRoundReadyForSimulation(KO_SELECTED_ROUND, progress)) return;
+  KO_SELECTED_ROUND = getFirstReadyRound(progress);
+}
+
+function renderRoundOptionHTML(roundKey, progress) {
+  const isAll = roundKey === "all";
+  const locked = IS_SIMULATING || (!isAll && !isRoundReadyForSimulation(roundKey, progress));
+  const selected = KO_SELECTED_ROUND === roundKey;
+  const label = isAll ? "Simular todo" : getSegmentVisualLabel(roundKey);
+  return `<button type="button" class="ko-round-option" data-ko-round="${roundKey}" data-selected="${selected ? "1" : "0"}" data-locked="${locked ? "1" : "0"}" aria-disabled="${locked ? "true" : "false"}" onclick="selectKORound('${roundKey}')" aria-label="Elegir ${label}"><span class="ko-round-dot"></span><span>${label}</span></button>`;
+}
+
+function renderBracketSimStrip(progress = getKOProgress()) {
   const strip = document.getElementById("koBracketSimStrip");
   if (!strip) return;
+  normalizeSelectedRound(progress);
 
-  const order = ["r16", "r8", "r4", "sf", "final"];
+  const rowPairs = [["all", "r4"], ["r16", "sf"], ["r8", "final"]];
+  const selectedLocked = IS_SIMULATING || (KO_SELECTED_ROUND !== "all" && !isRoundReadyForSimulation(KO_SELECTED_ROUND, progress));
 
-  strip.innerHTML = order
-    .map(roundKey => `
-      <div class="ko-bracket-sim-cell">
-        <span class="ko-bracket-sim-mini-label">${getSegmentVisualLabel(roundKey)}</span>
-        ${renderBracketSimBtnHTML(roundKey)}
+  strip.innerHTML = `
+    <div class="ko-round-controls">
+      <div class="ko-round-grid" role="radiogroup" aria-label="Opciones de simulación">
+        ${rowPairs.map(([leftKey, rightKey]) => `${renderRoundOptionHTML(leftKey, progress)}${renderRoundOptionHTML(rightKey, progress)}`).join("")}
       </div>
-    `)
-    .join("");
+      <button type="button" class="ko-bracket-sim-btn side" data-locked="${selectedLocked ? "1" : "0"}" aria-disabled="${selectedLocked ? "true" : "false"}" onclick="simSelectedKORound()" aria-label="Simular opción seleccionada">Simular</button>
+    </div>
+  `;
 }
 
 function refreshBracketSimButtons() {
-  document.querySelectorAll(".ko-bracket-sim-btn[data-ko-round]").forEach(btn => {
-    const roundKey = btn.getAttribute("data-ko-round");
-    if (!roundKey) return;
-
-    const locked = IS_SIMULATING || !isRoundReadyForSimulation(roundKey, getKOProgress());
-    btn.setAttribute("data-locked", locked ? "1" : "0");
-    btn.setAttribute("aria-disabled", locked ? "true" : "false");
-  });
+  renderBracketSimStrip(getKOProgress());
 }
 
 function getKOTeamOddsUS(teamName) {
@@ -2919,14 +3080,33 @@ function renderKOSimToolbar(progress) {
 
 window.simKOAll = async () => {
   if (IS_SIMULATING) return;
-  if (!KO_SIM_ROUND_IDS.r16.every(id => {
+  const r16Ready = KO_SIM_ROUND_IDS.r16.every(id => {
     const t = getKOMatchTeamsFromDom(id);
     return isRealKOTeamsPair(t.home, t.away);
-  })) return;
+  });
+  if (!r16Ready) {
+    alert('Completa la fase previa para simular eliminatorias');
+    return;
+  }
   const order = ["r16", "r8", "r4", "sf", "final"];
   for (let i = 0; i < order.length; i++) {
     await simKORound(order[i]);
   }
+};
+
+window.selectKORound = (roundKey) => {
+  const progress = getKOProgress();
+  if (roundKey !== "all" && !isRoundReadyForSimulation(roundKey, progress)) return;
+  KO_SELECTED_ROUND = roundKey;
+  renderBracketSimStrip(progress);
+};
+
+window.simSelectedKORound = async () => {
+  if (KO_SELECTED_ROUND === "all") {
+    await simKOAll();
+    return;
+  }
+  await simKORound(KO_SELECTED_ROUND);
 };
 
 window.simKOSegment = async (segmentKey) => {
@@ -3036,6 +3216,9 @@ window.simKORound = async (roundKey) => {
     } else {
       simulateKORoundInternal(roundKey);
     }
+
+    const nextRound = getNextKORound(roundKey);
+    if (nextRound) KO_SELECTED_ROUND = nextRound;
 
     renderKO();
   } finally {
@@ -3332,6 +3515,7 @@ if (bracketNode) void prepareBracketImagesForExport(bracketNode);
 document.getElementById("tab-groups").onclick = () => { void switchTab("groups"); };
 document.getElementById("tab-ko").onclick = () => { void switchTab("ko"); };
 document.getElementById("simulate-group-btn").onclick = simulateCurrentGroup;
+document.getElementById("simulate-all-groups-btn").onclick = simulateAllGroups;
 document.getElementById("reset-group-btn").onclick = resetCurrentGroup;
 document.getElementById("simple-mode-toggle").onclick = toggleSimpleMode;
 document.getElementById("reset-ko-btn").onclick = resetKOSelections;
