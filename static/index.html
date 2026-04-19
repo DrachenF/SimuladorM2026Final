@@ -187,9 +187,8 @@
     }
     .group-actions{
       display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      align-items:center;
+      gap:10px;
+      align-items:stretch;
       margin:0 0 14px;
       position:relative;
       z-index:1;
@@ -198,9 +197,44 @@
       background:linear-gradient(180deg, rgba(7,23,42,.72), rgba(5,17,32,.84));
       border:1px solid rgba(255,214,64,.10);
     }
-    .group-actions .button{
-      min-height:46px;
-      padding:11px 16px;
+    .group-sim-col,
+    .group-reset-col{
+      flex:1 1 0;
+      min-width:0;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .group-sim-selector{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:8px 10px;
+      min-width:0;
+    }
+    .group-sim-opt{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:13px;
+      font-weight:800;
+      color:#eef5ff;
+      white-space:nowrap;
+    }
+    .group-sim-opt input{
+      accent-color:#f3c623;
+      width:16px;
+      height:16px;
+      margin:0;
+    }
+    .group-sim-col .button{
+      min-height:42px;
+      min-width:112px;
+      padding:9px 14px;
+    }
+    .group-reset-col .button{
+      width:100%;
+      min-height:42px;
     }
 
     .button{
@@ -314,8 +348,6 @@
     .groupTable .team-label{font-size:12px;}
 
     .jornada-title{
-      margin-top:18px;
-      margin-bottom:10px;
       font-size:12px;
       text-transform:uppercase;
       letter-spacing:1px;
@@ -326,6 +358,21 @@
       border-radius:999px;
       display:inline-block;
       box-shadow:0 10px 18px rgba(0,0,0,.18);
+    }
+    .jornada-head{
+      margin-top:18px;
+      margin-bottom:10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+    }
+    .jornada-sim-btn{
+      min-height:36px;
+      padding:8px 12px;
+      border-radius:11px;
+      font-size:12px;
+      flex:0 0 auto;
     }
     .fixtureRow{
       display:grid;
@@ -918,18 +965,39 @@
         gap:8px;
         padding:8px;
       }
-      .group-actions .button{
+      .group-sim-col,
+      .group-reset-col{
+        grid-column:auto;
+        flex-direction:column;
+        align-items:stretch;
+      }
+      .group-sim-selector{
+        width:100%;
+        justify-content:flex-start;
+      }
+      .group-sim-opt{
+        font-size:12px;
+      }
+      .group-sim-col .button,
+      .group-reset-col .button{
         width:100%;
         justify-content:center;
-        min-height:44px;
-        padding:9px 10px;
+        min-height:40px;
+        padding:8px 10px;
         font-size:13px;
-        line-height:1.15;
+        line-height:1.1;
         white-space:normal;
         text-align:center;
       }
       #reset-group-btn{
         grid-column:1 / -1;
+      }
+      .jornada-head{
+        flex-wrap:wrap;
+      }
+      .jornada-sim-btn{
+        min-height:34px;
+        font-size:11px;
       }
       .mode-row{justify-content:space-between;align-items:center;}
       .mode-row-title{font-size:13px;}
@@ -1056,9 +1124,22 @@
       <div class="card">
         <div class="groupbar" id="groupBar"></div>
         <div class="group-actions">
-          <button class="button" id="simulate-group-btn" type="button">🎲 Simular grupo</button>
-          <button class="button" id="simulate-all-groups-btn" type="button">🎯 Simular grupos A-L</button>
-          <button class="button secondary" id="reset-group-btn" type="button">⟳ Reiniciar grupo</button>
+          <div class="group-sim-col">
+            <div class="group-sim-selector">
+              <label class="group-sim-opt">
+                <input type="radio" name="group-sim-target" value="current" checked>
+                Grupo <span id="groupSimCurrentLabel">A</span>
+              </label>
+              <label class="group-sim-opt">
+                <input type="radio" name="group-sim-target" value="all">
+                Grupos (A-L)
+              </label>
+            </div>
+            <button class="button" id="simulate-groups-btn" type="button">🎯 Simular</button>
+          </div>
+          <div class="group-reset-col">
+            <button class="button secondary" id="reset-group-btn" type="button">⟳ Reiniciar grupo A</button>
+          </div>
         </div>
         <h2 style="margin:0 0 10px 0; font-size:16px;">Tabla de Posiciones - Grupo <span id="lblGroup">A</span></h2>
         <div class="tableWrap tableWrap-groups" id="groupTableWrap">
@@ -2251,6 +2332,16 @@ function flushGroupRender(restoreFocusAfter = true) {
   runScheduledGroupRefresh(restoreFocusAfter);
 }
 
+function getSelectedGroupSimTarget() {
+  const selected = document.querySelector('input[name="group-sim-target"]:checked');
+  return selected ? selected.value : "current";
+}
+
+async function simulateSelectedGroups() {
+  if (getSelectedGroupSimTarget() === "all") return simulateAllGroups();
+  return simulateCurrentGroup();
+}
+
 async function simulateCurrentGroup() {
   if (IS_SIMULATING) return;
 
@@ -2260,10 +2351,8 @@ async function simulateCurrentGroup() {
 
   IS_SIMULATING = true;
 
-  const btn = document.getElementById("simulate-group-btn");
-  const btnAll = document.getElementById("simulate-all-groups-btn");
+  const btn = document.getElementById("simulate-groups-btn");
   const oldLabel = btn ? btn.innerHTML : "";
-  const oldAllLabel = btnAll ? btnAll.innerHTML : "";
 
   try {
     if (!FIXTURES[currentGroup]) FIXTURES[currentGroup] = {};
@@ -2272,7 +2361,6 @@ async function simulateCurrentGroup() {
       btn.disabled = true;
       btn.innerHTML = "⏳ Simulando...";
     }
-    if (btnAll) btnAll.disabled = true;
 
     const steps = getSimSteps("group");
 
@@ -2294,11 +2382,7 @@ async function simulateCurrentGroup() {
     hideSimHud();
     if (btn) {
       btn.disabled = false;
-      btn.innerHTML = oldLabel || "🎲 Simular grupo";
-    }
-    if (btnAll) {
-      btnAll.disabled = false;
-      btnAll.innerHTML = oldAllLabel || "🎯 Simular grupos A-L";
+      btn.innerHTML = oldLabel || "🎯 Simular";
     }
     IS_SIMULATING = false;
   }
@@ -2313,16 +2397,13 @@ async function simulateAllGroups() {
 
   IS_SIMULATING = true;
 
-  const btnSingle = document.getElementById("simulate-group-btn");
-  const btnAll = document.getElementById("simulate-all-groups-btn");
-  const oldSingleLabel = btnSingle ? btnSingle.innerHTML : "";
-  const oldAllLabel = btnAll ? btnAll.innerHTML : "";
+  const btn = document.getElementById("simulate-groups-btn");
+  const oldLabel = btn ? btn.innerHTML : "";
 
   try {
-    if (btnSingle) btnSingle.disabled = true;
-    if (btnAll) {
-      btnAll.disabled = true;
-      btnAll.innerHTML = "⏳ Simulando A-L...";
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = "⏳ Simulando A-L...";
     }
 
     const steps = getSimSteps("group");
@@ -2347,13 +2428,62 @@ async function simulateAllGroups() {
     document.getElementById("statusPill").textContent = "Grupos A-L simulados";
   } finally {
     hideSimHud();
-    if (btnSingle) {
-      btnSingle.disabled = false;
-      btnSingle.innerHTML = oldSingleLabel || "🎲 Simular grupo";
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = oldLabel || "🎯 Simular";
     }
-    if (btnAll) {
-      btnAll.disabled = false;
-      btnAll.innerHTML = oldAllLabel || "🎯 Simular grupos A-L";
+    IS_SIMULATING = false;
+  }
+}
+
+async function simulateCurrentMatchday(jornadaNumber) {
+  if (IS_SIMULATING) return;
+
+  const matches = getGroupMatchPlan(currentGroup).filter(match => Number(match.jornada) === Number(jornadaNumber));
+  if (!matches.length) return;
+
+  clearPendingGroupRender();
+  IS_SIMULATING = true;
+
+  const btn = document.getElementById(`simulate-jornada-${jornadaNumber}`);
+  const globalBtn = document.getElementById("simulate-groups-btn");
+  const oldLabel = btn ? btn.innerHTML : "";
+  const oldGlobalLabel = globalBtn ? globalBtn.innerHTML : "";
+  const fasterStepDelay = Math.max(24, Math.round(GROUP_SIM_STEP_DELAY * 0.6));
+  const fasterFinalDelay = Math.max(36, Math.round(GROUP_SIM_FINAL_DELAY * 0.6));
+
+  try {
+    if (!FIXTURES[currentGroup]) FIXTURES[currentGroup] = {};
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = "⏳ Simulando...";
+    }
+    if (globalBtn) globalBtn.disabled = true;
+
+    const steps = getSimSteps("group");
+    for (let step = 1; step <= steps; step++) {
+      matches.forEach(match => {
+        const result = pickWeightedResult(match.homeTeam, match.awayTeam, currentGroup);
+        FIXTURES[currentGroup][match.id] = { l: String(result.l), r: String(result.r) };
+      });
+
+      renderGroupView();
+      setSimHud(`Simulando Jornada ${jornadaNumber}...`, step / steps);
+      playSimTick(1 + (step / steps) * 0.35);
+      await sleep(step < steps ? fasterStepDelay : fasterFinalDelay);
+    }
+
+    renderGroupView();
+    document.getElementById("statusPill").textContent = `Grupo ${currentGroup} · Jornada ${jornadaNumber} simulada`;
+  } finally {
+    hideSimHud();
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = oldLabel || "Simular";
+    }
+    if (globalBtn) {
+      globalBtn.disabled = false;
+      globalBtn.innerHTML = oldGlobalLabel || "🎯 Simular";
     }
     IS_SIMULATING = false;
   }
@@ -2572,7 +2702,10 @@ function renderGroupFixtures(matches, fx) {
     .sort((a, b) => Number(a.t.replace(/\D/g, "")) - Number(b.t.replace(/\D/g, "")));
 
   document.getElementById("fixturesList").innerHTML = jData.map(j => `
-    <div class="jornada-title">${j.t}</div>
+    <div class="jornada-head">
+      <div class="jornada-title">${j.t}</div>
+      <button class="button jornada-sim-btn" id="simulate-jornada-${Number(j.t.replace(/\D/g, ''))}" type="button" onclick="simulateMatchday(${Number(j.t.replace(/\D/g, ''))})">Simular</button>
+    </div>
     ${j.m.map(match => {
       const val = fx[match.id] || {l:"", r:""};
       return `
@@ -2603,6 +2736,10 @@ function renderGroupView() {
   const matches = getGroupMatchPlan(currentGroup);
 
   document.getElementById("lblGroup").textContent = currentGroup;
+  const groupSimLabel = document.getElementById("groupSimCurrentLabel");
+  if (groupSimLabel) groupSimLabel.textContent = currentGroup;
+  const resetBtn = document.getElementById("reset-group-btn");
+  if (resetBtn) resetBtn.innerHTML = `⟳ Reiniciar grupo ${currentGroup}`;
   document.getElementById("groupBar").innerHTML = Object.keys(GROUPS).sort().map(g =>
     `<button class="gbtn" ${g===currentGroup?'aria-selected="true"':''} onclick="setGroup('${g}')">${g}</button>`
   ).join("");
@@ -3474,6 +3611,7 @@ window.validateInput = (el, id, side) => {
 };
 window.flushGroupRender = flushGroupRender;
 window.downloadBracketImage = downloadBracketImage;
+window.simulateMatchday = (jornada) => { void simulateCurrentMatchday(jornada); };
 
 window.updKO = (id, key, val) => {
   if (id === "F_1" && KO_FINAL_LOCKED) return;
@@ -3567,8 +3705,7 @@ if (bracketNode) void prepareBracketImagesForExport(bracketNode);
 
 document.getElementById("tab-groups").onclick = () => { void switchTab("groups"); };
 document.getElementById("tab-ko").onclick = () => { void switchTab("ko"); };
-document.getElementById("simulate-group-btn").onclick = simulateCurrentGroup;
-document.getElementById("simulate-all-groups-btn").onclick = simulateAllGroups;
+document.getElementById("simulate-groups-btn").onclick = () => { void simulateSelectedGroups(); };
 document.getElementById("reset-group-btn").onclick = resetCurrentGroup;
 document.getElementById("simple-mode-toggle").onclick = toggleSimpleMode;
 document.getElementById("reset-ko-btn").onclick = resetKOSelections;
