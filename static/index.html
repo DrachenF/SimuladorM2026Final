@@ -402,6 +402,33 @@
     .teamName{font-size:14px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text);}
     .teamName.right{text-align:right;}
     .score{display:flex;align-items:center;gap:8px;}
+    .clear-match-btn{
+      width:28px;
+      height:28px;
+      border-radius:999px;
+      border:1px solid rgba(255,122,122,.62);
+      background:linear-gradient(180deg, rgba(112,24,34,.95), rgba(66,12,20,.96));
+      color:#ffd9d9;
+      font-size:14px;
+      font-weight:900;
+      line-height:1;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      box-shadow:0 6px 14px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.14);
+      transition:transform .14s ease, filter .15s ease, opacity .15s ease;
+      flex:0 0 auto;
+    }
+    .clear-match-btn:hover{
+      transform:translateY(-1px);
+      filter:brightness(1.06);
+    }
+    .clear-match-btn.is-hidden{
+      visibility:hidden;
+      pointer-events:none;
+      opacity:0;
+    }
     #fixturesList{
       display:flex;
       flex-direction:column;
@@ -1088,6 +1115,11 @@
       .fixtureRow{grid-template-columns:1fr auto 1fr;gap:8px;padding:12px 9px;}
       .teamName{font-size:12px;}
       .box{width:38px;height:34px;font-size:15px;}
+      .clear-match-btn{
+        width:24px;
+        height:24px;
+        font-size:12px;
+      }
       .center-block{width:188px;gap:14px;}
       .champion-slot{min-height:150px;}
       .champion-panel{max-width:198px;min-height:138px;padding:12px 10px;}
@@ -2706,17 +2738,26 @@ function renderGroupFixtures(matches, fx) {
     </div>
     ${j.m.map(match => {
       const val = fx[match.id] || {l:"", r:""};
+      const isComplete = val.l !== "" && val.r !== "";
       return `
         <div class="fixtureRow">
           <div class="teamName">${renderTeamLabel(match.homeTeam, { flagClass:'flag small' })}</div>
           <div class="score">
             <input type="number" min="0" inputmode="numeric" class="box" data-match="${match.id}" data-side="l" value="${val.l}" oninput="validateInput(this,'${match.id}','l')" onblur="flushGroupRender(false)">
             <input type="number" min="0" inputmode="numeric" class="box" data-match="${match.id}" data-side="r" value="${val.r}" oninput="validateInput(this,'${match.id}','r')" onblur="flushGroupRender(false)">
+            <button type="button" class="clear-match-btn ${isComplete ? '' : 'is-hidden'}" onclick="clearMatchResult('${match.id}')" aria-label="Borrar resultado del partido">✕</button>
           </div>
           <div class="teamName right">${renderTeamLabel(match.awayTeam, { flagClass:'flag small', right:true })}</div>
         </div>`;
     }).join("")}
   `).join("");
+}
+
+function clearCurrentGroupMatch(matchId) {
+  clearPendingGroupRender();
+  if (!FIXTURES[currentGroup]) FIXTURES[currentGroup] = {};
+  FIXTURES[currentGroup][matchId] = { l:"", r:"" };
+  renderGroupView();
 }
 
 function renderGroupTableOnly() {
@@ -3610,6 +3651,7 @@ window.validateInput = (el, id, side) => {
 window.flushGroupRender = flushGroupRender;
 window.downloadBracketImage = downloadBracketImage;
 window.simulateMatchday = (jornada) => { void simulateCurrentMatchday(jornada); };
+window.clearMatchResult = (matchId) => { clearCurrentGroupMatch(matchId); };
 
 window.updKO = (id, key, val) => {
   if (id === "F_1" && KO_FINAL_LOCKED) return;
