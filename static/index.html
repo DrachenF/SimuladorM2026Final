@@ -187,8 +187,9 @@
     }
     .group-actions{
       display:flex;
+      flex-direction:column;
       gap:10px;
-      align-items:stretch;
+      align-items:center;
       margin:0 0 14px;
       position:relative;
       z-index:1;
@@ -197,18 +198,11 @@
       background:linear-gradient(180deg, rgba(7,23,42,.72), rgba(5,17,32,.84));
       border:1px solid rgba(255,214,64,.10);
     }
-    .group-sim-col,
-    .group-reset-col{
-      flex:1 1 0;
-      min-width:0;
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
     .group-sim-selector{
       display:flex;
       flex-wrap:wrap;
       align-items:center;
+      justify-content:center;
       gap:8px 10px;
       min-width:0;
     }
@@ -227,14 +221,15 @@
       height:16px;
       margin:0;
     }
-    .group-sim-col .button{
-      min-height:42px;
-      min-width:112px;
-      padding:9px 14px;
-    }
-    .group-reset-col .button{
+    .group-actions-buttons{
       width:100%;
-      min-height:42px;
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:10px;
+    }
+    .group-actions-buttons .button{
+      width:100%;
+      min-height:44px;
     }
 
     .button{
@@ -338,6 +333,11 @@
     .groupTable{width:100%;border-collapse:separate;border-spacing:0;min-width:560px;font-size:12px;}
     .groupTable th,
     .groupTable td{white-space:nowrap;}
+    .groupTable th:first-child,
+    .groupTable td:first-child{
+      width:118px;
+      max-width:118px;
+    }
     .groupTable thead th{
       position:sticky;
       top:0;
@@ -345,7 +345,8 @@
     }
     .ko-team-label{display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden;}
     .ko-team-label .team-label{font-size:12px;}
-    .groupTable .team-label{font-size:12px;}
+    .groupTable .team-with-flag{gap:7px;}
+    .groupTable .team-label{font-size:11px;}
 
     .jornada-title{
       font-size:12px;
@@ -364,15 +365,19 @@
       margin-bottom:10px;
       display:flex;
       align-items:center;
-      justify-content:space-between;
+      justify-content:center;
       gap:8px;
     }
     .jornada-sim-btn{
-      min-height:36px;
-      padding:8px 12px;
-      border-radius:11px;
+      min-height:38px;
+      min-width:210px;
+      padding:8px 14px;
+      border-radius:999px;
       font-size:12px;
-      flex:0 0 auto;
+      font-weight:900;
+      letter-spacing:.5px;
+      text-transform:uppercase;
+      justify-content:center;
     }
     .fixtureRow{
       display:grid;
@@ -961,25 +966,21 @@
       .gbtn{width:40px;height:36px;border-radius:11px;}
       .group-actions{
         display:grid;
-        grid-template-columns:repeat(2,minmax(0,1fr));
+        grid-template-columns:1fr;
         gap:8px;
         padding:8px;
       }
-      .group-sim-col,
-      .group-reset-col{
-        grid-column:auto;
-        flex-direction:column;
-        align-items:stretch;
-      }
       .group-sim-selector{
         width:100%;
-        justify-content:flex-start;
+        justify-content:center;
       }
       .group-sim-opt{
         font-size:12px;
       }
-      .group-sim-col .button,
-      .group-reset-col .button{
+      .group-actions-buttons{
+        grid-template-columns:1fr 1fr;
+      }
+      .group-actions-buttons .button{
         width:100%;
         justify-content:center;
         min-height:40px;
@@ -989,14 +990,12 @@
         white-space:normal;
         text-align:center;
       }
-      #reset-group-btn{
-        grid-column:1 / -1;
-      }
       .jornada-head{
-        flex-wrap:wrap;
+        margin-top:16px;
       }
       .jornada-sim-btn{
         min-height:34px;
+        min-width:180px;
         font-size:11px;
       }
       .mode-row{justify-content:space-between;align-items:center;}
@@ -1053,14 +1052,14 @@
       }
       .groupTable thead th:first-child{
         z-index:5;
-        min-width:132px;
-        max-width:132px;
+        min-width:108px;
+        max-width:108px;
         box-shadow:8px 0 18px rgba(1,10,20,.28);
       }
       .groupTable tbody td:first-child{
         z-index:2;
-        min-width:132px;
-        max-width:132px;
+        min-width:108px;
+        max-width:108px;
         background:linear-gradient(180deg, rgba(8,34,65,.99), rgba(6,21,40,.99));
         box-shadow:8px 0 18px rgba(1,10,20,.28);
       }
@@ -1124,20 +1123,18 @@
       <div class="card">
         <div class="groupbar" id="groupBar"></div>
         <div class="group-actions">
-          <div class="group-sim-col">
-            <div class="group-sim-selector">
-              <label class="group-sim-opt">
-                <input type="radio" name="group-sim-target" value="current" checked>
-                Grupo <span id="groupSimCurrentLabel">A</span>
-              </label>
-              <label class="group-sim-opt">
-                <input type="radio" name="group-sim-target" value="all">
-                Grupos (A-L)
-              </label>
-            </div>
-            <button class="button" id="simulate-groups-btn" type="button">🎯 Simular</button>
+          <div class="group-sim-selector">
+            <label class="group-sim-opt">
+              <input type="radio" name="group-sim-target" value="current" checked>
+              Grupo <span id="groupSimCurrentLabel">A</span>
+            </label>
+            <label class="group-sim-opt">
+              <input type="radio" name="group-sim-target" value="all">
+              Grupos (A-L)
+            </label>
           </div>
-          <div class="group-reset-col">
+          <div class="group-actions-buttons">
+            <button class="button" id="simulate-groups-btn" type="button">🎯 Simular</button>
             <button class="button secondary" id="reset-group-btn" type="button">⟳ Reiniciar grupo A</button>
           </div>
         </div>
@@ -2703,8 +2700,7 @@ function renderGroupFixtures(matches, fx) {
 
   document.getElementById("fixturesList").innerHTML = jData.map(j => `
     <div class="jornada-head">
-      <div class="jornada-title">${j.t}</div>
-      <button class="button jornada-sim-btn" id="simulate-jornada-${Number(j.t.replace(/\D/g, ''))}" type="button" onclick="simulateMatchday(${Number(j.t.replace(/\D/g, ''))})">Simular</button>
+      <button class="button jornada-sim-btn" id="simulate-jornada-${Number(j.t.replace(/\D/g, ''))}" type="button" onclick="simulateMatchday(${Number(j.t.replace(/\D/g, ''))})">Simular ${j.t}</button>
     </div>
     ${j.m.map(match => {
       const val = fx[match.id] || {l:"", r:""};
