@@ -985,14 +985,14 @@
       }
       .groupTable thead th:first-child{
         z-index:5;
-        min-width:154px;
-        max-width:154px;
+        min-width:132px;
+        max-width:132px;
         box-shadow:8px 0 18px rgba(1,10,20,.28);
       }
       .groupTable tbody td:first-child{
         z-index:2;
-        min-width:154px;
-        max-width:154px;
+        min-width:132px;
+        max-width:132px;
         background:linear-gradient(180deg, rgba(8,34,65,.99), rgba(6,21,40,.99));
         box-shadow:8px 0 18px rgba(1,10,20,.28);
       }
@@ -2553,7 +2553,7 @@ function getGroupStats(gName) {
 function renderGroupTableBody(stats) {
   document.getElementById("groupTableBody").innerHTML = stats.map((s, index) => `
     <tr class="${getGroupRowClass(currentGroup, index)}">
-      <td class="team-col">${renderTeamLabel(s.team)}</td>
+      <td class="team-col">${renderTeamLabel(s.team, { labelMode:'code' })}</td>
       <td class="num">${s.pj}</td><td class="num">${s.g}</td><td class="num">${s.e}</td><td class="num">${s.p}</td>
       <td class="num">${s.gf}</td><td class="num">${s.gc}</td><td class="num">${s.dg}</td><td class="num" style="font-weight:bold">${s.pts}</td>
     </tr>
