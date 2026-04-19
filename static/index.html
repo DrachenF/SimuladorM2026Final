@@ -695,7 +695,7 @@
   padding:12px 14px;
   flex-wrap:wrap;
   border:1px solid rgba(255,214,64,.12);
-  border-radius:16px;
+  border-radius:18px;
   background:linear-gradient(180deg, rgba(7,24,43,.84), rgba(5,18,34,.96));
   box-shadow:0 8px 16px rgba(0,0,0,.14);
 }
@@ -2739,12 +2739,14 @@ function renderGroupFixtures(matches, fx) {
     </div>
     ${j.m.map(match => {
       const val = fx[match.id] || {l:"", r:""};
+      const isComplete = val.l !== "" && val.r !== "";
       return `
         <div class="fixtureRow">
           <div class="teamName">${renderTeamLabel(match.homeTeam, { flagClass:'flag small' })}</div>
           <div class="score">
             <input type="number" min="0" inputmode="numeric" class="box" data-match="${match.id}" data-side="l" value="${val.l}" oninput="validateInput(this,'${match.id}','l')" onblur="flushGroupRender(false)">
             <input type="number" min="0" inputmode="numeric" class="box" data-match="${match.id}" data-side="r" value="${val.r}" oninput="validateInput(this,'${match.id}','r')" onblur="flushGroupRender(false)">
+            <button type="button" class="clear-match-btn ${isComplete ? '' : 'is-hidden'}" onclick="clearMatchResult('${match.id}')" aria-label="Borrar resultado del partido">✕</button>
           </div>
           <div class="teamName right">${renderTeamLabel(match.awayTeam, { flagClass:'flag small', right:true })}</div>
         </div>`;
