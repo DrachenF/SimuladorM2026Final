@@ -1,0 +1,36 @@
+Guía rápida para probar el simulador desde tu red WiFi
+=====================================================
+
+1) Arranca el servidor en tu PC
+-------------------------------
+- Abre una terminal en el proyecto y ejecuta:
+  python web_app.py --host 0.0.0.0 --port 8000
+  (puedes cambiar el puerto si el 8000 está ocupado).
+- Si prefieres variables de entorno, también funcionan:
+  SIMULADOR_HOST=0.0.0.0 SIMULADOR_PORT=8000 python web_app.py
+
+2) Obtén tu IP local
+--------------------
+- Windows: abre "Símbolo del sistema" y ejecuta `ipconfig`. Busca la IP IPv4 de tu adaptador Wi‑Fi.
+- macOS/Linux: ejecuta `ifconfig` o `ip addr` y anota la IP asignada a tu interfaz Wi‑Fi.
+- Reemplaza en el siguiente formato:
+  http://REEMPLAZAR_AQUI_IP_LOCAL:8000
+
+3) Conecta otros dispositivos
+-----------------------------
+- Asegúrate de que el teléfono/PC esté en la **misma red WiFi**.
+- Desde el navegador del dispositivo, abre la URL anterior sustituyendo REEMPLAZAR_AQUI_IP_LOCAL por tu IP real.
+
+4) Ajusta cortafuegos si es necesario
+-------------------------------------
+- Windows: si el Firewall pregunta, permite conexiones entrantes para Python en redes privadas. Si no aparece, abre "Firewall de Windows" > "Permitir una aplicación" y habilita Python para redes privadas.
+- macOS: ve a "Preferencias del Sistema" > "Seguridad y privacidad" > "Firewall" > "Opciones de cortafuegos" y permite que Python acepte conexiones entrantes.
+- Linux: si usas ufw, ejecuta `sudo ufw allow 8000/tcp` para abrir el puerto que uses.
+
+5) Problemas comunes
+--------------------
+- Si no carga, revisa que el puerto no esté bloqueado por antivirus o firewall.
+- Verifica que la IP no cambie al reconectar a la red; si cambió, actualiza la URL con la nueva IP.
+- Si el router aísla dispositivos entre sí (AP Isolation), desactiva esa opción en la configuración del router o prueba con otra red.
+
+Con esto deberías poder abrir el simulador desde cualquier dispositivo conectado al mismo WiFi usando la IP local y el puerto que hayas configurado.

@@ -1,0 +1,21 @@
+cd C:\Users\franc\Desktop\Simulador Mundial Final
+python simulador_grupos.py
+python simulador_Llaves.py
+python Web_app.py
+python web_app.py --host 0.0.0.0 --port 8000
+
+
+AHKL
+ACHL
+
+
+
+Alemania Francia      Francia Marruecos                Francia España           Francia                 Portugal 
+Korea Marruecos 
+Croacia España         España Senegal
+Suiza Senegal
+
+Brasil Noruega          Brasil Portugal                       Portugal Colombia       Portugal
+Dinamarca Portugal
+Argentina Paraguay   Argentina colombia
+Italia Colombia

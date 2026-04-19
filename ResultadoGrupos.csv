@@ -1,0 +1,49 @@
+grupo,pais,pj,w,d,l,GF,GC,DG,pts,puesto
+A,México,3,0,3,0,2,2,0,3,3
+A,Sudáfrica,3,0,1,2,2,4,-2,1,4
+A,República de Corea,3,1,1,1,4,4,0,4,2
+A,Chequia,3,2,1,0,3,1,2,7,1
+B,Canadá,0,0,0,0,0,0,0,0,2
+B,Bosnia y Herzegovina,0,0,0,0,0,0,0,0,1
+B,Qatar,0,0,0,0,0,0,0,0,3
+B,Suiza,0,0,0,0,0,0,0,0,4
+C,Brasil,0,0,0,0,0,0,0,0,1
+C,Marruecos,0,0,0,0,0,0,0,0,4
+C,Haití,0,0,0,0,0,0,0,0,3
+C,Escocia,0,0,0,0,0,0,0,0,2
+D,Estados Unidos,0,0,0,0,0,0,0,0,2
+D,Paraguay,0,0,0,0,0,0,0,0,3
+D,Australia,0,0,0,0,0,0,0,0,1
+D,Turquía,0,0,0,0,0,0,0,0,4
+E,Alemania,0,0,0,0,0,0,0,0,1
+E,Curazao,0,0,0,0,0,0,0,0,3
+E,Costa de Marfil,0,0,0,0,0,0,0,0,2
+E,Ecuador,0,0,0,0,0,0,0,0,4
+F,Países Bajos,0,0,0,0,0,0,0,0,2
+F,Japón,0,0,0,0,0,0,0,0,1
+F,Suecia,0,0,0,0,0,0,0,0,3
+F,Túnez,0,0,0,0,0,0,0,0,4
+G,Bélgica,0,0,0,0,0,0,0,0,1
+G,Egipto,0,0,0,0,0,0,0,0,2
+G,Irán,0,0,0,0,0,0,0,0,3
+G,Nueva Zelanda,0,0,0,0,0,0,0,0,4
+H,España,0,0,0,0,0,0,0,0,3
+H,Cabo Verde,0,0,0,0,0,0,0,0,2
+H,Arabia Saudita,0,0,0,0,0,0,0,0,1
+H,Uruguay,0,0,0,0,0,0,0,0,4
+I,Francia,0,0,0,0,0,0,0,0,1
+I,Senegal,0,0,0,0,0,0,0,0,4
+I,Irak,0,0,0,0,0,0,0,0,2
+I,Noruega,0,0,0,0,0,0,0,0,3
+J,Argentina,0,0,0,0,0,0,0,0,2
+J,Argelia,0,0,0,0,0,0,0,0,1
+J,Austria,0,0,0,0,0,0,0,0,3
+J,Jordania,0,0,0,0,0,0,0,0,4
+K,Portugal,0,0,0,0,0,0,0,0,2
+K,RD Congo,0,0,0,0,0,0,0,0,3
+K,Uzbekistán,0,0,0,0,0,0,0,0,4
+K,Colombia,0,0,0,0,0,0,0,0,1
+L,Inglaterra,0,0,0,0,0,0,0,0,3
+L,Croacia,0,0,0,0,0,0,0,0,1
+L,Ghana,0,0,0,0,0,0,0,0,2
+L,Panamá,0,0,0,0,0,0,0,0,4
