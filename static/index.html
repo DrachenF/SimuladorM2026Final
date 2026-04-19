@@ -96,16 +96,16 @@
       box-shadow:0 8px 18px rgba(0,0,0,.18);
     }
 
-    .tabs{
+.tabs{
   display:flex;
   gap:8px;
   flex-wrap:wrap;
   margin:0 0 10px;
   padding:6px;
-  border-radius:18px;
+  border-radius:16px;
   background:linear-gradient(180deg, rgba(2,12,25,.72), rgba(7,24,44,.86));
   border:1px solid rgba(255,214,64,.12);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.03), 0 10px 24px rgba(0,0,0,.16);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03), 0 8px 18px rgba(0,0,0,.14);
   position:sticky;
   top:calc(var(--safe-top) + 6px);
   z-index:18;
@@ -113,13 +113,14 @@
 .tabbtn{
   border:1px solid transparent;
   background:transparent;
-  color:var(--muted);
+  color:#c8d6ea;
   padding:12px 18px;
   border-radius:13px;
   cursor:pointer;
   font-weight:900;
   flex:1;
   text-align:center;
+  min-height:44px;
   transition:all .18s ease;
 }
 .tabbtn:hover{
@@ -186,9 +187,8 @@
     }
     .group-actions{
       display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      align-items:center;
+      gap:10px;
+      align-items:stretch;
       margin:0 0 14px;
       position:relative;
       z-index:1;
@@ -197,38 +197,78 @@
       background:linear-gradient(180deg, rgba(7,23,42,.72), rgba(5,17,32,.84));
       border:1px solid rgba(255,214,64,.10);
     }
-    .group-actions .button{padding:11px 16px;}
+    .group-sim-col,
+    .group-reset-col{
+      flex:1 1 0;
+      min-width:0;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .group-sim-selector{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:8px 10px;
+      min-width:0;
+    }
+    .group-sim-opt{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:13px;
+      font-weight:800;
+      color:#eef5ff;
+      white-space:nowrap;
+    }
+    .group-sim-opt input{
+      accent-color:#f3c623;
+      width:16px;
+      height:16px;
+      margin:0;
+    }
+    .group-sim-col .button{
+      min-height:42px;
+      min-width:112px;
+      padding:9px 14px;
+    }
+    .group-reset-col .button{
+      width:100%;
+      min-height:42px;
+    }
 
     .button{
   background:linear-gradient(180deg, #f7d66f 0%, #e8b621 100%);
   color:var(--ink);
   border:1px solid rgba(255,214,64,.72);
-  border-radius:15px;
-  padding:10px 14px;
+  border-radius:14px;
+  padding:10px 16px;
   font-weight:900;
   letter-spacing:.3px;
   cursor:pointer;
   transition:transform .15s ease, box-shadow .2s ease, filter .2s ease;
-  box-shadow:0 14px 28px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.30);
+  box-shadow:0 10px 20px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.30);
   text-decoration:none;
-  min-height:42px;
+  min-height:44px;
   display:inline-flex;
   align-items:center;
   justify-content:center;
 }
 .button:hover{
   transform:translateY(-1px);
-  filter:brightness(1.03);
+  filter:brightness(1.02);
+  box-shadow:0 12px 22px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.30);
 }
 .button:active{
   transform:translateY(0);
-  filter:brightness(.98);
+  filter:brightness(.99);
+  box-shadow:0 6px 12px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.24);
 }
 .button.secondary{
   background:linear-gradient(180deg, rgba(26,52,84,.98), rgba(10,26,47,.98));
   color:var(--text);
-  border:1px solid rgba(255,255,255,.08);
-  box-shadow:0 12px 24px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 8px 16px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.06);
 }
 
     .tableWrap{
@@ -240,16 +280,16 @@
       position:relative;
       z-index:1;
     }
-    table{width:100%;border-collapse:collapse;min-width:600px;font-size:13px;}
+    table{width:100%;border-collapse:collapse;min-width:560px;font-size:12px;}
     th{
       text-align:left;
       color:var(--ink);
-      padding:12px 10px;
+      padding:11px 8px;
       background:linear-gradient(180deg, #f2ce55 0%, #d8a91a 100%);
       border-bottom:1px solid rgba(255,214,64,.34);
       font-weight:800;
     }
-    td{padding:11px 10px;border-bottom:1px solid rgba(255,255,255,.05);}
+    td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.05);}
     tbody tr:nth-child(odd){background:rgba(255,255,255,.015);}
     tbody tr:hover{background:rgba(243,198,35,.08);}
     .num{text-align:center;width:40px;}
@@ -295,7 +335,7 @@
     .tableWrap-groups::-webkit-scrollbar{height:8px;}
     .tableWrap-groups::-webkit-scrollbar-track{background:rgba(255,255,255,.05);border-radius:999px;}
     .tableWrap-groups::-webkit-scrollbar-thumb{background:rgba(243,198,35,.42);border-radius:999px;}
-    .groupTable{width:100%;border-collapse:separate;border-spacing:0;min-width:600px;font-size:13px;}
+    .groupTable{width:100%;border-collapse:separate;border-spacing:0;min-width:560px;font-size:12px;}
     .groupTable th,
     .groupTable td{white-space:nowrap;}
     .groupTable thead th{
@@ -305,10 +345,9 @@
     }
     .ko-team-label{display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden;}
     .ko-team-label .team-label{font-size:12px;}
+    .groupTable .team-label{font-size:12px;}
 
     .jornada-title{
-      margin-top:18px;
-      margin-bottom:10px;
       font-size:12px;
       text-transform:uppercase;
       letter-spacing:1px;
@@ -319,6 +358,21 @@
       border-radius:999px;
       display:inline-block;
       box-shadow:0 10px 18px rgba(0,0,0,.18);
+    }
+    .jornada-head{
+      margin-top:18px;
+      margin-bottom:10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+    }
+    .jornada-sim-btn{
+      min-height:36px;
+      padding:8px 12px;
+      border-radius:11px;
+      font-size:12px;
+      flex:0 0 auto;
     }
     .fixtureRow{
       display:grid;
@@ -385,7 +439,7 @@
       min-width:100%;
       box-sizing:border-box;
     }
-    .ko-bracket-sim-strip{
+.ko-bracket-sim-strip{
   display:flex;
   flex-wrap:nowrap;
   gap:8px;
@@ -393,15 +447,15 @@
   justify-content:flex-start;
   overflow-x:auto;
   overflow-y:hidden;
-  padding:8px 10px 10px;
+  padding:9px 10px 9px;
   margin:0 0 10px;
   position:sticky;
   top:var(--bracket-sim-sticky-top);
   z-index:17;
   background:linear-gradient(180deg, rgba(6,20,37,.96), rgba(4,15,29,.98));
   border:1px solid rgba(255,214,64,.12);
-  border-radius:16px;
-  box-shadow:0 10px 20px rgba(0,0,0,.16);
+  border-radius:15px;
+  box-shadow:0 8px 16px rgba(0,0,0,.14);
   -webkit-overflow-scrolling:touch;
   scrollbar-width:thin;
   scrollbar-color:rgba(243,198,35,.36) rgba(255,255,255,.05);
@@ -442,14 +496,14 @@
   white-space:nowrap;
 }
 .ko-round-option{
-  min-height:24px;
-  padding:3px 5px;
+  min-height:32px;
+  padding:5px 9px;
   border:none;
   background:transparent;
   color:#f2f6ff;
-  border-radius:8px;
+  border-radius:9px;
   cursor:pointer;
-  font-size:11px;
+  font-size:12.5px;
   font-weight:800;
   letter-spacing:.2px;
   text-transform:none;
@@ -468,14 +522,14 @@
   cursor:not-allowed;
 }
 .ko-round-dot{
-  width:14px;
-  height:14px;
+  width:15px;
+  height:15px;
   border-radius:999px;
   border:1.5px solid rgba(255,255,255,.92);
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  flex:0 0 14px;
+  flex:0 0 15px;
 }
 .ko-round-dot::after{
   content:"";
@@ -496,7 +550,7 @@
 .ko-round-grid{
   display:grid;
   grid-template-columns:repeat(2, minmax(92px, 1fr));
-  gap:1px 8px;
+  gap:3px 8px;
   flex:1 1 auto;
   min-width:205px;
 }
@@ -511,10 +565,10 @@
 }
 .ko-bracket-sim-btn.side{
   flex:0 0 auto;
-  min-width:86px;
-  min-height:34px;
-  border-radius:10px;
-  font-size:11px;
+  min-width:96px;
+  min-height:40px;
+  border-radius:13px;
+  font-size:12px;
 }
 .bracket{
       position:relative;
@@ -541,12 +595,12 @@
       box-shadow:0 8px 18px rgba(0,0,0,.24);
     }
     .mteam{
-      padding:0 10px 0 12px;
+      padding:0 10px 0 11px;
       height:50%;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      font-size:12px;
+      font-size:13px;
       font-weight:700;
       color:#fff;
     }
@@ -571,19 +625,19 @@
     .show-pen .ko-pen{display:block;animation:fadeIn .3s;}
     @keyframes fadeIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
     svg.lines{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;}
-    .center-block{width:188px;display:flex;flex-direction:column;justify-content:center;gap:18px;align-items:center;position:relative;}
+    .center-block{width:158px;display:flex;flex-direction:column;justify-content:center;gap:16px;align-items:center;position:relative;}
     .final-title-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;}
     .champion-name{min-height:24px;font-size:18px;font-weight:900;letter-spacing:.3px;color:#fff3bf;text-align:center;text-shadow:0 4px 18px rgba(0,0,0,.4);}
     .final-lock-message{min-height:18px;margin-top:8px;font-size:13px;font-weight:800;color:#ff6c6c;text-align:center;letter-spacing:.2px;}
-    .champion-slot{width:100%;min-height:210px;display:flex;align-items:center;justify-content:center;position:relative;}
-    .champion-panel{width:100%;max-width:260px;min-height:190px;border-radius:24px;border:1px solid rgba(255,214,64,.26);background:radial-gradient(circle at top, rgba(243,198,35,.18), rgba(6,18,36,.96) 62%);box-shadow:0 18px 38px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.06);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:18px 16px;position:relative;overflow:hidden;}
+    .champion-slot{width:100%;min-height:190px;display:flex;align-items:center;justify-content:center;position:relative;}
+    .champion-panel{width:100%;max-width:224px;min-height:166px;border-radius:21px;border:1px solid rgba(255,214,64,.24);background:radial-gradient(circle at top, rgba(243,198,35,.18), rgba(6,18,36,.96) 62%);box-shadow:0 14px 28px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.06);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:14px 12px;position:relative;overflow:hidden;}
     .champion-panel.empty{opacity:.18;filter:saturate(.7);}
-    .champion-caption{font-size:15px;font-weight:900;letter-spacing:2px;color:#ffd96a;position:relative;z-index:2;}
-    .champion-download-btn{position:relative;z-index:4;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:9px 14px;border-radius:999px;border:1px solid rgba(255,214,64,.72);background:linear-gradient(180deg, #f7d35c 0%, #e7b81f 100%);color:#08264d;font-size:13px;font-weight:900;cursor:pointer;box-shadow:0 10px 18px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.32);transition:transform .15s ease, filter .2s ease;}
+    .champion-caption{font-size:14px;font-weight:900;letter-spacing:1.6px;color:#ffd96a;position:relative;z-index:2;}
+    .champion-download-btn{position:relative;z-index:4;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid rgba(255,214,64,.72);background:linear-gradient(180deg, #f7d35c 0%, #e7b81f 100%);color:#08264d;font-size:12px;font-weight:900;cursor:pointer;box-shadow:0 8px 14px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.32);transition:transform .15s ease, filter .2s ease;}
     .champion-download-btn:hover{transform:translateY(-1px);filter:brightness(1.03);}
     .champion-download-btn:disabled{opacity:.75;cursor:wait;transform:none;}
-    .champion-flag{width:132px;height:92px;object-fit:cover;border-radius:14px;border:2px solid rgba(255,255,255,.34);box-shadow:0 16px 30px rgba(0,0,0,.34);background:rgba(255,255,255,.08);position:relative;z-index:2;}
-    .champion-glow{position:absolute;inset:auto auto 26px auto;width:170px;height:170px;border-radius:999px;background:radial-gradient(circle, rgba(243,198,35,.26), rgba(243,198,35,0) 68%);filter:blur(2px);z-index:1;}
+    .champion-flag{width:116px;height:80px;object-fit:cover;border-radius:12px;border:2px solid rgba(255,255,255,.34);box-shadow:0 12px 22px rgba(0,0,0,.3);background:rgba(255,255,255,.08);position:relative;z-index:2;}
+    .champion-glow{position:absolute;inset:auto auto 20px auto;width:144px;height:144px;border-radius:999px;background:radial-gradient(circle, rgba(243,198,35,.24), rgba(243,198,35,0) 68%);filter:blur(2px);z-index:1;}
     .champion-panel.empty .champion-caption{opacity:.55;}
     .champion-panel.empty .champion-flag{opacity:.18;}
     .confetti-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:3;}
@@ -598,7 +652,7 @@
     .export-capture .champion-panel{overflow:visible;}
 
 
-    .mode-row{
+.mode-row{
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -609,7 +663,7 @@
   border:1px solid rgba(255,214,64,.12);
   border-radius:16px;
   background:linear-gradient(180deg, rgba(7,24,43,.84), rgba(5,18,34,.96));
-  box-shadow:0 10px 22px rgba(0,0,0,.16);
+  box-shadow:0 8px 16px rgba(0,0,0,.14);
 }
 .mode-row-title{
   font-size:14px;
@@ -629,11 +683,12 @@
   flex-wrap:wrap;
 }
 .ko-reset-btn{
-  padding:9px 14px;
+  padding:10px 16px;
   border-radius:13px;
   font-size:13px;
   line-height:1;
   white-space:nowrap;
+  border-color:rgba(255,255,255,.16) !important;
 }
     .switch-toggle{
       width:66px;
@@ -717,34 +772,34 @@
   border:1px solid rgba(255,214,64,.72);
   background:linear-gradient(180deg, #f7d66f 0%, #e8b621 100%);
   color:var(--ink);
-  border-radius:14px;
+  border-radius:13px;
   cursor:pointer;
   font-size:14px;
   font-weight:900;
   letter-spacing:.3px;
-  box-shadow:0 12px 24px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.28);
+  box-shadow:0 10px 20px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.28);
   transition:transform .15s ease, filter .2s ease;
 }
 .ko-sim-all-btn:hover:not(:disabled){
   transform:translateY(-1px);
-  filter:brightness(1.03);
+  filter:brightness(1.02);
 }
 .ko-sim-all-btn:disabled{
-  opacity:.58;
+  opacity:.55;
   cursor:not-allowed;
   transform:none;
   filter:none;
 }
 
 .ko-bracket-sim-btn{
-  min-height:30px;
-  padding:5px 12px;
+  min-height:34px;
+  padding:6px 12px;
   border:1px solid rgba(255,214,64,.72);
   background:linear-gradient(180deg, #f7d66f 0%, #e8b621 100%);
   color:var(--ink);
   border-radius:999px;
   cursor:pointer;
-  font-size:11px;
+  font-size:11.5px;
   font-weight:900;
   letter-spacing:.4px;
   text-transform:uppercase;
@@ -754,10 +809,10 @@
 }
 .ko-bracket-sim-btn:hover:not(:disabled){
   transform:translateY(-1px);
-  filter:brightness(1.02);
+  filter:brightness(1.015);
 }
 .ko-bracket-sim-btn[data-locked="1"]{
-  opacity:.72;
+  opacity:.62;
   cursor:not-allowed;
   filter:saturate(.82);
 }
@@ -788,7 +843,7 @@
 
 .sim-hud{
   position:fixed;
-  top:18px;
+  top:calc(var(--safe-top) + 8px);
   left:50%;
   transform:translateX(-50%);
   z-index:9999;
@@ -796,24 +851,24 @@
 }
 
 .sim-hud-inner{
-  min-width:260px;
+  min-width:220px;
   max-width:92vw;
   display:flex;
   align-items:center;
-  gap:12px;
-  padding:12px 14px;
-  border-radius:16px;
+  gap:10px;
+  padding:9px 10px;
+  border-radius:14px;
   border:1px solid rgba(255,214,64,.34);
   background:linear-gradient(180deg, rgba(8,34,65,.96), rgba(4,18,35,.98));
-  box-shadow:0 16px 30px rgba(0,0,0,.28);
+  box-shadow:0 10px 22px rgba(0,0,0,.24);
   backdrop-filter:blur(10px);
 }
 
 .sim-spin{
-  width:18px;
-  height:18px;
+  width:15px;
+  height:15px;
   border-radius:999px;
-  border:3px solid rgba(255,214,64,.22);
+  border:2.5px solid rgba(255,214,64,.22);
   border-top-color:#ffd966;
   animation:sim-spin-rotate .65s linear infinite;
   flex:0 0 auto;
@@ -829,10 +884,10 @@
 }
 
 .sim-hud-title{
-  font-size:13px;
+  font-size:12px;
   font-weight:900;
   color:#fff4bf;
-  margin-bottom:7px;
+  margin-bottom:5px;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
@@ -840,7 +895,7 @@
 
 .sim-hud-bar{
   width:100%;
-  height:7px;
+  height:6px;
   border-radius:999px;
   background:rgba(255,255,255,.08);
   overflow:hidden;
@@ -863,7 +918,7 @@
         border-radius:14px;
       }
       .app-title{font-size:14px;}
-      .tabs{gap:8px;margin-bottom:10px;top:calc(var(--safe-top) + 6px);}
+      .tabs{gap:7px;margin-bottom:8px;top:calc(var(--safe-top) + 6px);}
       .tabbtn{padding:11px 12px;font-size:14px;}
       .card{padding:14px 12px;margin-bottom:14px;border-radius:16px;}
       .group-actions{gap:10px;padding:9px;}
@@ -871,16 +926,16 @@
       .tableWrap{border-radius:12px;}
       .fixtureRow{padding:12px 10px;gap:10px;}
       .teamName{font-size:13px;}
-      .mode-row{justify-content:space-between;gap:10px;}
-      .champion-slot{min-height:180px;}
-      .champion-panel{max-width:240px;min-height:170px;}
-      .champion-flag{width:118px;height:82px;}
+      .mode-row{justify-content:space-between;gap:8px;padding:10px 11px;}
+      .champion-slot{min-height:168px;}
+      .champion-panel{max-width:214px;min-height:154px;}
+      .champion-flag{width:108px;height:76px;}
       .champion-name{font-size:16px;}
     }
     @media (max-width: 640px){
       .wrap{padding:calc(env(safe-area-inset-top, 0px) + 10px) 8px 18px;gap:10px;}
       :root{
-        --tabs-bar-h:54px;
+        --tabs-bar-h:50px;
         --ko-sim-toolbar-h:58px;
       }
       .app-topbar{
@@ -891,39 +946,105 @@
       .tabs{
         display:grid;
         grid-template-columns:1fr 1fr;
-        gap:8px;
+        gap:6px;
         top:calc(var(--safe-top) + 6px);
-        border-radius:14px;
-        padding:5px;
+        border-radius:12px;
+        padding:4px;
       }
       .tabbtn{
-        font-size:13px;
-        padding:11px 10px;
-        border-radius:11px;
-        min-height:44px;
+        font-size:12px;
+        padding:9px 8px;
+        border-radius:10px;
+        min-height:38px;
       }
       .groupbar{gap:7px;padding-bottom:12px;margin-bottom:12px;}
       .gbtn{width:40px;height:36px;border-radius:11px;}
-      .group-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:8px;}
-      .group-actions .button{width:100%;justify-content:center;}
+      .group-actions{
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:8px;
+        padding:8px;
+      }
+      .group-sim-col,
+      .group-reset-col{
+        grid-column:auto;
+        flex-direction:column;
+        align-items:stretch;
+      }
+      .group-sim-selector{
+        width:100%;
+        justify-content:flex-start;
+      }
+      .group-sim-opt{
+        font-size:12px;
+      }
+      .group-sim-col .button,
+      .group-reset-col .button{
+        width:100%;
+        justify-content:center;
+        min-height:40px;
+        padding:8px 10px;
+        font-size:13px;
+        line-height:1.1;
+        white-space:normal;
+        text-align:center;
+      }
+      #reset-group-btn{
+        grid-column:1 / -1;
+      }
+      .jornada-head{
+        flex-wrap:wrap;
+      }
+      .jornada-sim-btn{
+        min-height:34px;
+        font-size:11px;
+      }
       .mode-row{justify-content:space-between;align-items:center;}
       .mode-row-title{font-size:13px;}
       .mode-row-state{font-size:11px;}
-      .tableWrap table{min-width:560px;}
+      .mode-row-actions{gap:8px;width:100%;justify-content:space-between;}
+      .ko-reset-btn{min-height:36px;}
+      .ko-bracket-sim-strip{
+        border-radius:14px;
+        padding:7px 8px 8px;
+      }
+      .ko-round-grid{
+        min-width:182px;
+      }
+      .ko-round-option{
+        min-height:30px;
+        font-size:11px;
+      }
+      .ko-bracket-sim-btn.side{
+        min-width:84px;
+        min-height:36px;
+        font-size:11px;
+      }
+      .sim-hud{
+        top:calc(var(--safe-top) + 6px);
+      }
+      .sim-hud-inner{
+        min-width:205px;
+        padding:8px 9px;
+      }
+      .sim-hud-title{
+        font-size:11.5px;
+      }
+      .tableWrap table{min-width:540px;}
       .tableWrap-groups{
         margin-inline:-4px;
         border-radius:12px;
       }
       .groupTable{
-        min-width:608px;
+        min-width:576px;
       }
       .groupTable th,
       .groupTable td{
         padding:10px 8px;
       }
       .groupTable .num{
-        min-width:46px;
-        width:46px;
+        min-width:42px;
+        width:42px;
       }
       .groupTable th:first-child,
       .groupTable td:first-child{
@@ -932,14 +1053,14 @@
       }
       .groupTable thead th:first-child{
         z-index:5;
-        min-width:170px;
-        max-width:170px;
+        min-width:132px;
+        max-width:132px;
         box-shadow:8px 0 18px rgba(1,10,20,.28);
       }
       .groupTable tbody td:first-child{
         z-index:2;
-        min-width:170px;
-        max-width:170px;
+        min-width:132px;
+        max-width:132px;
         background:linear-gradient(180deg, rgba(8,34,65,.99), rgba(6,21,40,.99));
         box-shadow:8px 0 18px rgba(1,10,20,.28);
       }
@@ -966,10 +1087,10 @@
       .fixtureRow{grid-template-columns:1fr auto 1fr;gap:8px;padding:12px 9px;}
       .teamName{font-size:12px;}
       .box{width:38px;height:34px;font-size:15px;}
-      .center-block{width:248px;gap:18px;}
-      .champion-slot{min-height:160px;}
-      .champion-panel{max-width:220px;min-height:150px;padding:14px 12px;}
-      .champion-flag{width:104px;height:72px;}
+      .center-block{width:188px;gap:14px;}
+      .champion-slot{min-height:150px;}
+      .champion-panel{max-width:198px;min-height:138px;padding:12px 10px;}
+      .champion-flag{width:94px;height:66px;}
       .champion-caption{font-size:13px;letter-spacing:1.4px;}
       .champion-name{font-size:15px;min-height:20px;}
     }
@@ -1003,9 +1124,22 @@
       <div class="card">
         <div class="groupbar" id="groupBar"></div>
         <div class="group-actions">
-          <button class="button" id="simulate-group-btn" type="button">🎲 Simular grupo</button>
-          <button class="button" id="simulate-all-groups-btn" type="button">🎯 Simular grupos A-L</button>
-          <button class="button secondary" id="reset-group-btn" type="button">⟳ Reiniciar grupo</button>
+          <div class="group-sim-col">
+            <div class="group-sim-selector">
+              <label class="group-sim-opt">
+                <input type="radio" name="group-sim-target" value="current" checked>
+                Grupo <span id="groupSimCurrentLabel">A</span>
+              </label>
+              <label class="group-sim-opt">
+                <input type="radio" name="group-sim-target" value="all">
+                Grupos (A-L)
+              </label>
+            </div>
+            <button class="button" id="simulate-groups-btn" type="button">🎯 Simular</button>
+          </div>
+          <div class="group-reset-col">
+            <button class="button secondary" id="reset-group-btn" type="button">⟳ Reiniciar grupo A</button>
+          </div>
         </div>
         <h2 style="margin:0 0 10px 0; font-size:16px;">Tabla de Posiciones - Grupo <span id="lblGroup">A</span></h2>
         <div class="tableWrap tableWrap-groups" id="groupTableWrap">
@@ -2198,6 +2332,16 @@ function flushGroupRender(restoreFocusAfter = true) {
   runScheduledGroupRefresh(restoreFocusAfter);
 }
 
+function getSelectedGroupSimTarget() {
+  const selected = document.querySelector('input[name="group-sim-target"]:checked');
+  return selected ? selected.value : "current";
+}
+
+async function simulateSelectedGroups() {
+  if (getSelectedGroupSimTarget() === "all") return simulateAllGroups();
+  return simulateCurrentGroup();
+}
+
 async function simulateCurrentGroup() {
   if (IS_SIMULATING) return;
 
@@ -2207,10 +2351,8 @@ async function simulateCurrentGroup() {
 
   IS_SIMULATING = true;
 
-  const btn = document.getElementById("simulate-group-btn");
-  const btnAll = document.getElementById("simulate-all-groups-btn");
+  const btn = document.getElementById("simulate-groups-btn");
   const oldLabel = btn ? btn.innerHTML : "";
-  const oldAllLabel = btnAll ? btnAll.innerHTML : "";
 
   try {
     if (!FIXTURES[currentGroup]) FIXTURES[currentGroup] = {};
@@ -2219,7 +2361,6 @@ async function simulateCurrentGroup() {
       btn.disabled = true;
       btn.innerHTML = "⏳ Simulando...";
     }
-    if (btnAll) btnAll.disabled = true;
 
     const steps = getSimSteps("group");
 
@@ -2241,11 +2382,7 @@ async function simulateCurrentGroup() {
     hideSimHud();
     if (btn) {
       btn.disabled = false;
-      btn.innerHTML = oldLabel || "🎲 Simular grupo";
-    }
-    if (btnAll) {
-      btnAll.disabled = false;
-      btnAll.innerHTML = oldAllLabel || "🎯 Simular grupos A-L";
+      btn.innerHTML = oldLabel || "🎯 Simular";
     }
     IS_SIMULATING = false;
   }
@@ -2260,16 +2397,13 @@ async function simulateAllGroups() {
 
   IS_SIMULATING = true;
 
-  const btnSingle = document.getElementById("simulate-group-btn");
-  const btnAll = document.getElementById("simulate-all-groups-btn");
-  const oldSingleLabel = btnSingle ? btnSingle.innerHTML : "";
-  const oldAllLabel = btnAll ? btnAll.innerHTML : "";
+  const btn = document.getElementById("simulate-groups-btn");
+  const oldLabel = btn ? btn.innerHTML : "";
 
   try {
-    if (btnSingle) btnSingle.disabled = true;
-    if (btnAll) {
-      btnAll.disabled = true;
-      btnAll.innerHTML = "⏳ Simulando A-L...";
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = "⏳ Simulando A-L...";
     }
 
     const steps = getSimSteps("group");
@@ -2294,13 +2428,62 @@ async function simulateAllGroups() {
     document.getElementById("statusPill").textContent = "Grupos A-L simulados";
   } finally {
     hideSimHud();
-    if (btnSingle) {
-      btnSingle.disabled = false;
-      btnSingle.innerHTML = oldSingleLabel || "🎲 Simular grupo";
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = oldLabel || "🎯 Simular";
     }
-    if (btnAll) {
-      btnAll.disabled = false;
-      btnAll.innerHTML = oldAllLabel || "🎯 Simular grupos A-L";
+    IS_SIMULATING = false;
+  }
+}
+
+async function simulateCurrentMatchday(jornadaNumber) {
+  if (IS_SIMULATING) return;
+
+  const matches = getGroupMatchPlan(currentGroup).filter(match => Number(match.jornada) === Number(jornadaNumber));
+  if (!matches.length) return;
+
+  clearPendingGroupRender();
+  IS_SIMULATING = true;
+
+  const btn = document.getElementById(`simulate-jornada-${jornadaNumber}`);
+  const globalBtn = document.getElementById("simulate-groups-btn");
+  const oldLabel = btn ? btn.innerHTML : "";
+  const oldGlobalLabel = globalBtn ? globalBtn.innerHTML : "";
+  const fasterStepDelay = Math.max(24, Math.round(GROUP_SIM_STEP_DELAY * 0.6));
+  const fasterFinalDelay = Math.max(36, Math.round(GROUP_SIM_FINAL_DELAY * 0.6));
+
+  try {
+    if (!FIXTURES[currentGroup]) FIXTURES[currentGroup] = {};
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = "⏳ Simulando...";
+    }
+    if (globalBtn) globalBtn.disabled = true;
+
+    const steps = getSimSteps("group");
+    for (let step = 1; step <= steps; step++) {
+      matches.forEach(match => {
+        const result = pickWeightedResult(match.homeTeam, match.awayTeam, currentGroup);
+        FIXTURES[currentGroup][match.id] = { l: String(result.l), r: String(result.r) };
+      });
+
+      renderGroupView();
+      setSimHud(`Simulando Jornada ${jornadaNumber}...`, step / steps);
+      playSimTick(1 + (step / steps) * 0.35);
+      await sleep(step < steps ? fasterStepDelay : fasterFinalDelay);
+    }
+
+    renderGroupView();
+    document.getElementById("statusPill").textContent = `Grupo ${currentGroup} · Jornada ${jornadaNumber} simulada`;
+  } finally {
+    hideSimHud();
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = oldLabel || "Simular";
+    }
+    if (globalBtn) {
+      globalBtn.disabled = false;
+      globalBtn.innerHTML = oldGlobalLabel || "🎯 Simular";
     }
     IS_SIMULATING = false;
   }
@@ -2500,7 +2683,7 @@ function getGroupStats(gName) {
 function renderGroupTableBody(stats) {
   document.getElementById("groupTableBody").innerHTML = stats.map((s, index) => `
     <tr class="${getGroupRowClass(currentGroup, index)}">
-      <td class="team-col">${renderTeamLabel(s.team)}</td>
+      <td class="team-col">${renderTeamLabel(s.team, { labelMode:'code' })}</td>
       <td class="num">${s.pj}</td><td class="num">${s.g}</td><td class="num">${s.e}</td><td class="num">${s.p}</td>
       <td class="num">${s.gf}</td><td class="num">${s.gc}</td><td class="num">${s.dg}</td><td class="num" style="font-weight:bold">${s.pts}</td>
     </tr>
@@ -2519,7 +2702,10 @@ function renderGroupFixtures(matches, fx) {
     .sort((a, b) => Number(a.t.replace(/\D/g, "")) - Number(b.t.replace(/\D/g, "")));
 
   document.getElementById("fixturesList").innerHTML = jData.map(j => `
-    <div class="jornada-title">${j.t}</div>
+    <div class="jornada-head">
+      <div class="jornada-title">${j.t}</div>
+      <button class="button jornada-sim-btn" id="simulate-jornada-${Number(j.t.replace(/\D/g, ''))}" type="button" onclick="simulateMatchday(${Number(j.t.replace(/\D/g, ''))})">Simular</button>
+    </div>
     ${j.m.map(match => {
       const val = fx[match.id] || {l:"", r:""};
       return `
@@ -2550,6 +2736,10 @@ function renderGroupView() {
   const matches = getGroupMatchPlan(currentGroup);
 
   document.getElementById("lblGroup").textContent = currentGroup;
+  const groupSimLabel = document.getElementById("groupSimCurrentLabel");
+  if (groupSimLabel) groupSimLabel.textContent = currentGroup;
+  const resetBtn = document.getElementById("reset-group-btn");
+  if (resetBtn) resetBtn.innerHTML = `⟳ Reiniciar grupo ${currentGroup}`;
   document.getElementById("groupBar").innerHTML = Object.keys(GROUPS).sort().map(g =>
     `<button class="gbtn" ${g===currentGroup?'aria-selected="true"':''} onclick="setGroup('${g}')">${g}</button>`
   ).join("");
@@ -3421,6 +3611,7 @@ window.validateInput = (el, id, side) => {
 };
 window.flushGroupRender = flushGroupRender;
 window.downloadBracketImage = downloadBracketImage;
+window.simulateMatchday = (jornada) => { void simulateCurrentMatchday(jornada); };
 
 window.updKO = (id, key, val) => {
   if (id === "F_1" && KO_FINAL_LOCKED) return;
@@ -3514,8 +3705,7 @@ if (bracketNode) void prepareBracketImagesForExport(bracketNode);
 
 document.getElementById("tab-groups").onclick = () => { void switchTab("groups"); };
 document.getElementById("tab-ko").onclick = () => { void switchTab("ko"); };
-document.getElementById("simulate-group-btn").onclick = simulateCurrentGroup;
-document.getElementById("simulate-all-groups-btn").onclick = simulateAllGroups;
+document.getElementById("simulate-groups-btn").onclick = () => { void simulateSelectedGroups(); };
 document.getElementById("reset-group-btn").onclick = resetCurrentGroup;
 document.getElementById("simple-mode-toggle").onclick = toggleSimpleMode;
 document.getElementById("reset-ko-btn").onclick = resetKOSelections;
