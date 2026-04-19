@@ -246,16 +246,16 @@
       position:relative;
       z-index:1;
     }
-    table{width:100%;border-collapse:collapse;min-width:600px;font-size:13px;}
+    table{width:100%;border-collapse:collapse;min-width:560px;font-size:12px;}
     th{
       text-align:left;
       color:var(--ink);
-      padding:12px 10px;
+      padding:11px 8px;
       background:linear-gradient(180deg, #f2ce55 0%, #d8a91a 100%);
       border-bottom:1px solid rgba(255,214,64,.34);
       font-weight:800;
     }
-    td{padding:11px 10px;border-bottom:1px solid rgba(255,255,255,.05);}
+    td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.05);}
     tbody tr:nth-child(odd){background:rgba(255,255,255,.015);}
     tbody tr:hover{background:rgba(243,198,35,.08);}
     .num{text-align:center;width:40px;}
@@ -301,7 +301,7 @@
     .tableWrap-groups::-webkit-scrollbar{height:8px;}
     .tableWrap-groups::-webkit-scrollbar-track{background:rgba(255,255,255,.05);border-radius:999px;}
     .tableWrap-groups::-webkit-scrollbar-thumb{background:rgba(243,198,35,.42);border-radius:999px;}
-    .groupTable{width:100%;border-collapse:separate;border-spacing:0;min-width:600px;font-size:13px;}
+    .groupTable{width:100%;border-collapse:separate;border-spacing:0;min-width:560px;font-size:12px;}
     .groupTable th,
     .groupTable td{white-space:nowrap;}
     .groupTable thead th{
@@ -311,6 +311,7 @@
     }
     .ko-team-label{display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden;}
     .ko-team-label .team-label{font-size:12px;}
+    .groupTable .team-label{font-size:12px;}
 
     .jornada-title{
       margin-top:18px;
@@ -577,19 +578,19 @@
     .show-pen .ko-pen{display:block;animation:fadeIn .3s;}
     @keyframes fadeIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
     svg.lines{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;}
-    .center-block{width:188px;display:flex;flex-direction:column;justify-content:center;gap:18px;align-items:center;position:relative;}
+    .center-block{width:158px;display:flex;flex-direction:column;justify-content:center;gap:16px;align-items:center;position:relative;}
     .final-title-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;}
     .champion-name{min-height:24px;font-size:18px;font-weight:900;letter-spacing:.3px;color:#fff3bf;text-align:center;text-shadow:0 4px 18px rgba(0,0,0,.4);}
     .final-lock-message{min-height:18px;margin-top:8px;font-size:13px;font-weight:800;color:#ff6c6c;text-align:center;letter-spacing:.2px;}
-    .champion-slot{width:100%;min-height:210px;display:flex;align-items:center;justify-content:center;position:relative;}
-    .champion-panel{width:100%;max-width:260px;min-height:190px;border-radius:24px;border:1px solid rgba(255,214,64,.26);background:radial-gradient(circle at top, rgba(243,198,35,.18), rgba(6,18,36,.96) 62%);box-shadow:0 18px 38px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.06);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:18px 16px;position:relative;overflow:hidden;}
+    .champion-slot{width:100%;min-height:190px;display:flex;align-items:center;justify-content:center;position:relative;}
+    .champion-panel{width:100%;max-width:224px;min-height:166px;border-radius:21px;border:1px solid rgba(255,214,64,.24);background:radial-gradient(circle at top, rgba(243,198,35,.18), rgba(6,18,36,.96) 62%);box-shadow:0 14px 28px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.06);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:14px 12px;position:relative;overflow:hidden;}
     .champion-panel.empty{opacity:.18;filter:saturate(.7);}
-    .champion-caption{font-size:15px;font-weight:900;letter-spacing:2px;color:#ffd96a;position:relative;z-index:2;}
-    .champion-download-btn{position:relative;z-index:4;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:9px 14px;border-radius:999px;border:1px solid rgba(255,214,64,.72);background:linear-gradient(180deg, #f7d35c 0%, #e7b81f 100%);color:#08264d;font-size:13px;font-weight:900;cursor:pointer;box-shadow:0 10px 18px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.32);transition:transform .15s ease, filter .2s ease;}
+    .champion-caption{font-size:14px;font-weight:900;letter-spacing:1.6px;color:#ffd96a;position:relative;z-index:2;}
+    .champion-download-btn{position:relative;z-index:4;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid rgba(255,214,64,.72);background:linear-gradient(180deg, #f7d35c 0%, #e7b81f 100%);color:#08264d;font-size:12px;font-weight:900;cursor:pointer;box-shadow:0 8px 14px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.32);transition:transform .15s ease, filter .2s ease;}
     .champion-download-btn:hover{transform:translateY(-1px);filter:brightness(1.03);}
     .champion-download-btn:disabled{opacity:.75;cursor:wait;transform:none;}
-    .champion-flag{width:132px;height:92px;object-fit:cover;border-radius:14px;border:2px solid rgba(255,255,255,.34);box-shadow:0 16px 30px rgba(0,0,0,.34);background:rgba(255,255,255,.08);position:relative;z-index:2;}
-    .champion-glow{position:absolute;inset:auto auto 26px auto;width:170px;height:170px;border-radius:999px;background:radial-gradient(circle, rgba(243,198,35,.26), rgba(243,198,35,0) 68%);filter:blur(2px);z-index:1;}
+    .champion-flag{width:116px;height:80px;object-fit:cover;border-radius:12px;border:2px solid rgba(255,255,255,.34);box-shadow:0 12px 22px rgba(0,0,0,.3);background:rgba(255,255,255,.08);position:relative;z-index:2;}
+    .champion-glow{position:absolute;inset:auto auto 20px auto;width:144px;height:144px;border-radius:999px;background:radial-gradient(circle, rgba(243,198,35,.24), rgba(243,198,35,0) 68%);filter:blur(2px);z-index:1;}
     .champion-panel.empty .champion-caption{opacity:.55;}
     .champion-panel.empty .champion-flag{opacity:.18;}
     .confetti-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:3;}
@@ -879,9 +880,9 @@
       .fixtureRow{padding:12px 10px;gap:10px;}
       .teamName{font-size:13px;}
       .mode-row{justify-content:space-between;gap:8px;padding:10px 11px;}
-      .champion-slot{min-height:180px;}
-      .champion-panel{max-width:240px;min-height:170px;}
-      .champion-flag{width:118px;height:82px;}
+      .champion-slot{min-height:168px;}
+      .champion-panel{max-width:214px;min-height:154px;}
+      .champion-flag{width:108px;height:76px;}
       .champion-name{font-size:16px;}
     }
     @media (max-width: 640px){
@@ -961,21 +962,21 @@
       .sim-hud-title{
         font-size:11.5px;
       }
-      .tableWrap table{min-width:560px;}
+      .tableWrap table{min-width:540px;}
       .tableWrap-groups{
         margin-inline:-4px;
         border-radius:12px;
       }
       .groupTable{
-        min-width:608px;
+        min-width:576px;
       }
       .groupTable th,
       .groupTable td{
         padding:10px 8px;
       }
       .groupTable .num{
-        min-width:46px;
-        width:46px;
+        min-width:42px;
+        width:42px;
       }
       .groupTable th:first-child,
       .groupTable td:first-child{
@@ -984,14 +985,14 @@
       }
       .groupTable thead th:first-child{
         z-index:5;
-        min-width:170px;
-        max-width:170px;
+        min-width:154px;
+        max-width:154px;
         box-shadow:8px 0 18px rgba(1,10,20,.28);
       }
       .groupTable tbody td:first-child{
         z-index:2;
-        min-width:170px;
-        max-width:170px;
+        min-width:154px;
+        max-width:154px;
         background:linear-gradient(180deg, rgba(8,34,65,.99), rgba(6,21,40,.99));
         box-shadow:8px 0 18px rgba(1,10,20,.28);
       }
@@ -1018,10 +1019,10 @@
       .fixtureRow{grid-template-columns:1fr auto 1fr;gap:8px;padding:12px 9px;}
       .teamName{font-size:12px;}
       .box{width:38px;height:34px;font-size:15px;}
-      .center-block{width:248px;gap:18px;}
-      .champion-slot{min-height:160px;}
-      .champion-panel{max-width:220px;min-height:150px;padding:14px 12px;}
-      .champion-flag{width:104px;height:72px;}
+      .center-block{width:188px;gap:14px;}
+      .champion-slot{min-height:150px;}
+      .champion-panel{max-width:198px;min-height:138px;padding:12px 10px;}
+      .champion-flag{width:94px;height:66px;}
       .champion-caption{font-size:13px;letter-spacing:1.4px;}
       .champion-name{font-size:15px;min-height:20px;}
     }
