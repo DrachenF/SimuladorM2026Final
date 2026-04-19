@@ -102,10 +102,10 @@
   flex-wrap:wrap;
   margin:0 0 10px;
   padding:6px;
-  border-radius:18px;
+  border-radius:16px;
   background:linear-gradient(180deg, rgba(2,12,25,.72), rgba(7,24,44,.86));
   border:1px solid rgba(255,214,64,.12);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.03), 0 10px 24px rgba(0,0,0,.16);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03), 0 8px 18px rgba(0,0,0,.14);
   position:sticky;
   top:calc(var(--safe-top) + 6px);
   z-index:18;
@@ -393,15 +393,15 @@
   justify-content:flex-start;
   overflow-x:auto;
   overflow-y:hidden;
-  padding:10px 12px 11px;
+  padding:9px 10px 9px;
   margin:0 0 10px;
   position:sticky;
   top:var(--bracket-sim-sticky-top);
   z-index:17;
   background:linear-gradient(180deg, rgba(6,20,37,.96), rgba(4,15,29,.98));
   border:1px solid rgba(255,214,64,.12);
-  border-radius:18px;
-  box-shadow:0 10px 20px rgba(0,0,0,.16);
+  border-radius:15px;
+  box-shadow:0 8px 16px rgba(0,0,0,.14);
   -webkit-overflow-scrolling:touch;
   scrollbar-width:thin;
   scrollbar-color:rgba(243,198,35,.36) rgba(255,255,255,.05);
@@ -609,7 +609,7 @@
   border:1px solid rgba(255,214,64,.12);
   border-radius:18px;
   background:linear-gradient(180deg, rgba(7,24,43,.84), rgba(5,18,34,.96));
-  box-shadow:0 10px 22px rgba(0,0,0,.16);
+  box-shadow:0 8px 16px rgba(0,0,0,.14);
 }
 .mode-row-title{
   font-size:14px;
@@ -788,7 +788,7 @@
 
 .sim-hud{
   position:fixed;
-  top:calc(var(--safe-top) + 12px);
+  top:calc(var(--safe-top) + 8px);
   left:50%;
   transform:translateX(-50%);
   z-index:9999;
@@ -796,24 +796,24 @@
 }
 
 .sim-hud-inner{
-  min-width:260px;
+  min-width:220px;
   max-width:92vw;
   display:flex;
   align-items:center;
-  gap:12px;
-  padding:12px 14px;
-  border-radius:18px;
+  gap:10px;
+  padding:9px 10px;
+  border-radius:14px;
   border:1px solid rgba(255,214,64,.34);
   background:linear-gradient(180deg, rgba(8,34,65,.96), rgba(4,18,35,.98));
-  box-shadow:0 16px 30px rgba(0,0,0,.30);
+  box-shadow:0 10px 22px rgba(0,0,0,.24);
   backdrop-filter:blur(10px);
 }
 
 .sim-spin{
-  width:18px;
-  height:18px;
+  width:15px;
+  height:15px;
   border-radius:999px;
-  border:3px solid rgba(255,214,64,.22);
+  border:2.5px solid rgba(255,214,64,.22);
   border-top-color:#ffd966;
   animation:sim-spin-rotate .65s linear infinite;
   flex:0 0 auto;
@@ -829,10 +829,10 @@
 }
 
 .sim-hud-title{
-  font-size:13px;
+  font-size:12px;
   font-weight:900;
   color:#fff4bf;
-  margin-bottom:7px;
+  margin-bottom:5px;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
@@ -840,7 +840,7 @@
 
 .sim-hud-bar{
   width:100%;
-  height:7px;
+  height:6px;
   border-radius:999px;
   background:rgba(255,255,255,.08);
   overflow:hidden;
@@ -863,7 +863,7 @@
         border-radius:14px;
       }
       .app-title{font-size:14px;}
-      .tabs{gap:8px;margin-bottom:10px;top:calc(var(--safe-top) + 6px);}
+      .tabs{gap:7px;margin-bottom:8px;top:calc(var(--safe-top) + 6px);}
       .tabbtn{padding:11px 12px;font-size:14px;}
       .card{padding:14px 12px;margin-bottom:14px;border-radius:16px;}
       .group-actions{gap:10px;padding:9px;}
@@ -871,7 +871,7 @@
       .tableWrap{border-radius:12px;}
       .fixtureRow{padding:12px 10px;gap:10px;}
       .teamName{font-size:13px;}
-      .mode-row{justify-content:space-between;gap:10px;padding:11px 12px;}
+      .mode-row{justify-content:space-between;gap:8px;padding:10px 11px;}
       .champion-slot{min-height:180px;}
       .champion-panel{max-width:240px;min-height:170px;}
       .champion-flag{width:118px;height:82px;}
@@ -880,7 +880,7 @@
     @media (max-width: 640px){
       .wrap{padding:calc(env(safe-area-inset-top, 0px) + 10px) 8px 18px;gap:10px;}
       :root{
-        --tabs-bar-h:54px;
+        --tabs-bar-h:50px;
         --ko-sim-toolbar-h:58px;
       }
       .app-topbar{
@@ -891,16 +891,16 @@
       .tabs{
         display:grid;
         grid-template-columns:1fr 1fr;
-        gap:8px;
+        gap:6px;
         top:calc(var(--safe-top) + 6px);
-        border-radius:14px;
-        padding:5px;
+        border-radius:12px;
+        padding:4px;
       }
       .tabbtn{
-        font-size:13px;
-        padding:11px 10px;
-        border-radius:11px;
-        min-height:44px;
+        font-size:12px;
+        padding:10px 9px;
+        border-radius:10px;
+        min-height:40px;
       }
       .groupbar{gap:7px;padding-bottom:12px;margin-bottom:12px;}
       .gbtn{width:40px;height:36px;border-radius:11px;}
@@ -910,32 +910,32 @@
       .mode-row-title{font-size:13px;}
       .mode-row-state{font-size:11px;}
       .mode-row-actions{gap:8px;width:100%;justify-content:space-between;}
-      .ko-reset-btn{min-height:40px;}
+      .ko-reset-btn{min-height:38px;}
       .ko-bracket-sim-strip{
-        border-radius:16px;
-        padding:9px 9px 10px;
+        border-radius:14px;
+        padding:7px 8px 8px;
       }
       .ko-round-grid{
-        min-width:192px;
+        min-width:182px;
       }
       .ko-round-option{
-        min-height:29px;
-        font-size:11px;
+        min-height:27px;
+        font-size:10.5px;
       }
       .ko-bracket-sim-btn.side{
-        min-width:86px;
-        min-height:36px;
+        min-width:82px;
+        min-height:34px;
         font-size:11px;
       }
       .sim-hud{
-        top:calc(var(--safe-top) + 10px);
+        top:calc(var(--safe-top) + 6px);
       }
       .sim-hud-inner{
-        min-width:230px;
-        padding:10px 12px;
+        min-width:205px;
+        padding:8px 9px;
       }
       .sim-hud-title{
-        font-size:12px;
+        font-size:11.5px;
       }
       .tableWrap table{min-width:560px;}
       .tableWrap-groups{
