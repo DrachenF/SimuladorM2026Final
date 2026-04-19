@@ -911,8 +911,25 @@
       }
       .groupbar{gap:7px;padding-bottom:12px;margin-bottom:12px;}
       .gbtn{width:40px;height:36px;border-radius:11px;}
-      .group-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:8px;}
-      .group-actions .button{width:100%;justify-content:center;}
+      .group-actions{
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:8px;
+        padding:8px;
+      }
+      .group-actions .button{
+        width:100%;
+        justify-content:center;
+        min-height:44px;
+        padding:9px 10px;
+        font-size:13px;
+        line-height:1.15;
+        white-space:normal;
+        text-align:center;
+      }
+      #reset-group-btn{
+        grid-column:1 / -1;
+      }
       .mode-row{justify-content:space-between;align-items:center;}
       .mode-row-title{font-size:13px;}
       .mode-row-state{font-size:11px;}
